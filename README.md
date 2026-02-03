@@ -1,6 +1,6 @@
-# CS2340_Project
+# CS 2340 Project 2
 
-# Sprint 1 Planning Document
+# Sprint 1 Planning
 
 ## Scrum Roles and Additional Responsibilities
 
@@ -13,7 +13,7 @@
 - **All team members are full-stack developers** (front-end + back-end responsibilities shared across the team).
 
 ### Team availability
-Screenshot of your shared weekly availability calendar to the repo:
+Screenshot of the shared weekly availability calendar:
 
 ![Team availability calendar](docs/images/team-availability.png)
 
@@ -21,7 +21,7 @@ Screenshot of your shared weekly availability calendar to the repo:
 
 ## User Stories and Backlog (Sprint 1)
 
-We plan to work on the **first 10 user stories**.
+We plan to work on the **first 10 user stories** in sprint 1.
 
 ### Prioritized user stories
 1. As a **Job Seeker**, I want to create a profile with my headline, skills, education, work experience, and links so recruiters can learn about me.
@@ -36,15 +36,17 @@ We plan to work on the **first 10 user stories**.
 10. As a **Recruiter**, I want to post and edit job roles so candidates can apply to my openings.
 
 ### Scrum board
-Screenshot of your Scrum board (e.g., Trello/Jira) to the repo:
+Screenshot of the Scrum board (Jira):
 
 ![Scrum board](docs/images/scrum-board.png)
+
+[Our Scrum Board (Jira)](https://careerconnect.atlassian.net/jira/software/projects/CAR/boards/1)
 
 ---
 
 ## When to Meet the TA
 
-- **One meeting during class**
+- **First meeting:** During **class**
 - **Second meeting:** Every **Thursday at 2:00 PM**  
   - Location: **CCB 267 (preferred)** or via **Teams**
 
@@ -53,5 +55,8 @@ Screenshot of your Scrum board (e.g., Trello/Jira) to the repo:
 ## Staying in Touch
 
 - We will use **Microsoft Teams** to communicate.
+- We will address disagreements with coordination of the Scrum Master
+- Our decision making process will be team-based, with input from all members.
 - **Disallowed channels:** social media (e.g., Snapchat, Instagram, TikTok) and messaging services (e.g., WhatsApp, iMessage, GroupMe).
+
 
