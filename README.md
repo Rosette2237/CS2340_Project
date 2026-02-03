@@ -13,10 +13,8 @@
 - **All team members are full-stack developers** (front-end + back-end responsibilities shared across the team).
 
 ### Team availability
-Add a screenshot of your shared weekly availability calendar to the repo, for example:
-- `docs/images/team-availability.png`
+Screenshot of your shared weekly availability calendar to the repo:
 
-Then reference it here:
 ![Team availability calendar](docs/images/team-availability.png)
 
 ---
@@ -38,10 +36,8 @@ We plan to work on the **first 10 user stories**.
 10. As a **Recruiter**, I want to post and edit job roles so candidates can apply to my openings.
 
 ### Scrum board
-Add a screenshot of your Scrum board (e.g., Trello/Jira) to the repo, for example:
-- `docs/images/scrum-board.png`
+Screenshot of your Scrum board (e.g., Trello/Jira) to the repo:
 
-Then reference it here:
 ![Scrum board](docs/images/scrum-board.png)
 
 ---
