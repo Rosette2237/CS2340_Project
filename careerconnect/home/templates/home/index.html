@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content">
+    <h1>CareerConnect</h1>
+    <h3>Shoot for the stars!</h3>
+    <p><i>And you'll land... a job!</i></p>
+</div>
+<canvas id="starCanvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('starCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let stars = [];
+    const numStars = 400;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Star {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.baseRadius = Math.random() * 1.5;
+            this.color = `rgba(255, 255, 255, ${Math.random() * 0.7 + 0.3})`;
+            this.timer = Math.random();
+            this.pulseTimer = Math.random() * 0.05;
+            this.maxScale = 2;
+        }
+
+        update() {
+            this.timer += this.pulseTimer;
+            let pulse = Math.sin(this.timer);
+            let growth = pulse > 0 ? pulse * this.maxScale : 0;
+            this.currentRadius = this.baseRadius + growth;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+    }
+
+    function init() {
+        stars = [];
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+</script>
+{% endblock content %}
