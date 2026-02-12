@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<canvas id="starCanvas"></canvas>
+
+<div class="main-scroll-area">
+    <div class="profile-card">
+        <h1 class="page-title">Edit Profile</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label class="form-label">Headline</label>
+            <input type="text" name="headline" class="custom-input" 
+                   value="{{ profile.headline }}" placeholder="e.g. Software Engineer | Georgia Tech Student">
+
+            <label class="form-label">Skills</label>
+            <textarea name="skills" class="custom-input" rows="4" 
+                    placeholder="Python, Django, React, Algorithms...">{{ profile.skills }}</textarea>
+
+            <label class="form-label">Education</label>
+            <textarea name="Education" class="custom-input" rows="4" 
+                    placeholder="University Name, Major...">{{ profile.education }}</textarea>
+
+            <label class="form-label">Work Experience</label>
+            <textarea name="work_experience" class="custom-input" rows="5"
+                    placeholder="Briefly describe internships, research projects, or leadership roles...">{{ profile.work_experience }}</textarea>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label">LinkedIn URL</label>
+                    <input type="url" name="linkedin_link" class="custom-input" 
+                    value="{{ profile.linkedin_link }}" placeholder="https://linkedin.com/in/your-username">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Portfolio URL</label>
+                    <input type="url" name="portfolio_link" class="custom-input" 
+                    value="{{ profile.portfolio_link }}" placeholder="https://yourdomain.com or https://github.com/your-username">
+                </div>
+            </div>
+
+            <div class="button-row">
+                <a href="/" class="btn-cancel">Cancel</a>
+                <button type="submit" class="btn-save">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('starCanvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Star {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.baseRadius = Math.random() * 1.5;
+            this.timer = Math.random();
+            this.pulseTimer = Math.random() * 0.05;
+        }
+        update() {
+            this.timer += this.pulseTimer;
+            this.currentRadius = this.baseRadius + (Math.sin(this.timer) > 0 ? Math.sin(this.timer) * 2 : 0);
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.fill();
+        }
+    }
+
+    for (let i = 0; i < 400; i++) stars.push(new Star());
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(s => { s.update(); s.draw(); });
+        requestAnimationFrame(animate);
+    }
+    animate();
+</script>
+{% endblock %}
