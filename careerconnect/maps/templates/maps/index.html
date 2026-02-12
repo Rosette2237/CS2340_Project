@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<div style="padding:50px; display:grid; gap:50px; align-items:start">
+  <div class="sidebar-spacer"></div>
+
+  <div id="map-box"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  
+  var map = L.map('map-box');
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: 'OpenStreetMap'
+  }).addTo(map);
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        map.setView([lat, lng], 13);
+
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup('You')
+            .openPopup();
+        
+        L.marker([lat+0.01, lng+0.01]).addTo(map)
+            .bindPopup('Other point')
+            .openPopup();
+    }, function() {
+        alert("Could not get your location. Defaulting to London.");
+        map.setView([51.505, -0.09], 13);
+    });
+    } else {
+        alert("Your browser does not support geolocation.");
+    }
+
+</script>
+{% endblock content %}

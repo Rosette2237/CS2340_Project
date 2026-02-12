@@ -1,0 +1,76 @@
+.vr.white {
+    background-color: black;
+    opacity: 0.75;
+    width: 2px;
+    height: 30px;
+    align-self: center;
+}
+
+body{
+    background-color: black;
+    overflow: hidden;
+    margin: 0;
+}            
+.content {
+    position: absolute;
+    text-align: center;
+    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+h1 {
+    font-size: 75px;
+}
+
+h3 {
+    font-size: 30px;
+
+}
+p {
+    font-size: 20px;
+}
+nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding: 20px 50px;
+    position: absolute;
+    box-sizing: border-box;
+    background-color:rgba(211, 211, 211, 0.8);
+}
+
+.logo {
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+    transition: opacity 0.2s;
+    
+}
+
+.nav-links a:hover {
+    opacity: 0.7;
+}
+
+#map-box {
+    height: 500px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
