@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <div style="padding:50px; display:grid; gap:50px; align-items:start">
@@ -9,37 +10,29 @@
   <div id="map-box"></div>
 </div>
 
+{{ template_data.locations|json_script:"locations-data" }}
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-  
-  var map = L.map('map-box');
+<script>    
+    var map = L.map('map-box').setView([33.7502, -84.3885], 10);
 
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: 'OpenStreetMap'
-  }).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: 'OpenStreetMap'
+    }).addTo(map);
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-
-        map.setView([lat, lng], 13);
-
-        L.marker([lat, lng]).addTo(map)
-            .bindPopup('You')
-            .openPopup();
-        
-        L.marker([lat+0.01, lng+0.01]).addTo(map)
-            .bindPopup('Other point')
-            .openPopup();
-    }, function() {
-        alert("Could not get your location. Defaulting to London.");
-        map.setView([51.505, -0.09], 13);
+    const locations = JSON.parse(
+    document.getElementById("locations-data").textContent
+    );
+    locations.forEach(loc => {
+        console.log("Adding:", loc);
+    L.marker([
+        parseFloat(loc.location_lat),
+        parseFloat(loc.location_long)
+    ])
+        .addTo(map)
+        .bindPopup(loc.title);
     });
-    } else {
-        alert("Your browser does not support geolocation.");
-    }
 
 </script>
 {% endblock content %}
