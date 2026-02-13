@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block content %}
-<canvas id="starCanvas"></canvas>
 
 <div class="main-scroll-area">
     <div class="jobs-list-wrapper" style="width: 90%; max-width: 1200px; margin: 50px auto;">
@@ -73,44 +72,4 @@
         </div>
     </div>
 </div>
-
-<script>
-    const canvas = document.getElementById('starCanvas');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    class Star {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.baseRadius = Math.random() * 1.5;
-            this.timer = Math.random();
-            this.pulseTimer = Math.random() * 0.05;
-        }
-        update() {
-            this.timer += this.pulseTimer;
-            this.currentRadius = this.baseRadius + (Math.sin(this.timer) > 0 ? Math.sin(this.timer) * 2 : 0);
-        }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.fill();
-        }
-    }
-
-    for (let i = 0; i < 400; i++) stars.push(new Star());
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(s => { s.update(); s.draw(); });
-        requestAnimationFrame(animate);
-    }
-    animate();
-</script>
 {% endblock %}

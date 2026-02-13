@@ -18,6 +18,8 @@ class Job(models.Model):
     job_type = models.CharField(max_length=10, choices=JOB_TYPES)
     visa_sponsorship = models.BooleanField(default=False)
     posted_at = models.DateTimeField(auto_now_add=True)
+    location_lat = models.DecimalField(decimal_places=4, max_digits=7)
+    location_long = models.DecimalField(decimal_places=4, max_digits=7)
 
     def __str__(self):
         return self.title
