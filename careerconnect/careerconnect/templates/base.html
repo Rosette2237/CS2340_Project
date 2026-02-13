@@ -15,7 +15,18 @@
                 <div class="vr white mx-2 d-none d-lg-block"></div>
                 <li><a href="{% url 'maps.index' %}"">Map</a></li>
                 <div class="vr white mx-2 d-none d-lg-block"></div>
+
+                {% if user.is_authenticated %}
                 <li><a href="{% url 'profile.edit' %}"">Profile</a></li>
+                <div class="vr white mx-2 d-none d-lg-block"></div>
+                <li><a href="{% url 'accounts.logout' %}"">Logout ({{ user.username }})</a></li>'
+                
+                {% else %}
+                <li><a href="{% url 'accounts.login' %}"">Login</a></li>
+                <div class="vr white mx-2 d-none d-lg-block"></div>
+                <li><a href="{% url 'accounts.signup' %}"">Sign Up</a></li>'
+                {% endif %}
+
             </ul>
         </nav>
         <!-- Header -->
