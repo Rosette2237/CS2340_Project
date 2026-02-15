@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Job
-from django.db.models import Q
+from django.db.models import Q, Exists, OuterRef
 
 def job_list(request):
     jobs = Job.objects.all().order_by('-posted_at')
@@ -21,6 +21,17 @@ def job_list(request):
 
     if visa_query == 'on':
         jobs = jobs.filter(visa_sponsorship=True)
+
+    if request.user.is_authenticated:
+        from applications.models import Application
+        jobs = jobs.annotate(
+            user_has_applied=Exists(
+                Application.objects.filter(
+                    job=OuterRef('pk'),
+                    user=request.user
+                )
+            )
+        )
 
     context = {
         'jobs': jobs,

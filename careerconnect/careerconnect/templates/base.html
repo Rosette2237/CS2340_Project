@@ -7,34 +7,32 @@
         href="{% static 'css/style.css' %}">
     </head>
     <body>
-        <!-- Header -->
         <nav>
             <a href="/" class="logo">CareerConnect</a>
             <ul class="nav-links">
-                <li><a href="{% url 'jobs.index' %}"">Jobs</a></li>
+                <li><a href="{% url 'jobs.index' %}">Jobs</a></li>
                 <div class="vr white mx-2 d-none d-lg-block"></div>
-                <li><a href="{% url 'maps.index' %}"">Map</a></li>
+                <li><a href="{% url 'maps.index' %}">Map</a></li>
                 <div class="vr white mx-2 d-none d-lg-block"></div>
 
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'profile.edit' %}"">Profile</a></li>
+                <li><a href="{% url 'applications.index' %}">My Applications</a></li>
                 <div class="vr white mx-2 d-none d-lg-block"></div>
-                <li><a href="{% url 'accounts.logout' %}"">Logout ({{ user.username }})</a></li>'
+                <li><a href="{% url 'profile.edit' %}">Profile</a></li>
+                <div class="vr white mx-2 d-none d-lg-block"></div>
+                <li><a href="{% url 'accounts.logout' %}">Logout ({{ user.username }})</a></li>
                 
                 {% else %}
-                <li><a href="{% url 'accounts.login' %}"">Login</a></li>
+                <li><a href="{% url 'accounts.login' %}">Login</a></li>
                 <div class="vr white mx-2 d-none d-lg-block"></div>
-                <li><a href="{% url 'accounts.signup' %}"">Sign Up</a></li>'
+                <li><a href="{% url 'accounts.signup' %}">Sign Up</a></li>
                 {% endif %}
 
             </ul>
         </nav>
-        <!-- Header -->
 
         {% block content %}
         {% endblock content %}
-        <!-- Footer -->
-        <!-- Footer -->
 
         <canvas id="starCanvas"></canvas>
 
