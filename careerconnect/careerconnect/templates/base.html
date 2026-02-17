@@ -9,33 +9,34 @@
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     </head>
     <body>
-        <!-- Header -->
         <nav>
             <a class="logo" href="/">
                 <img src="{% static 'img/CCLogo.png' %}" alt="CareerConnect" height="225" />
             </a>
             <ul class="nav-links">
-                <li><a href="{% url 'jobs.index' %}"">Explore Jobs</a></li>
-                <li><a href="{% url 'maps.index' %}"">View Map</a></li>
+                <li><a href="{% url 'jobs.index' %}">Explore Jobs</a></li>
+                <div class="vr white mx-2 d-none d-lg-block"></div>
+                <li><a href="{% url 'maps.index' %}">View Map</a></li>
                 <div class="vr white mx-2 d-none d-lg-block"></div>
 
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'profile.edit' %}"">My Profile</a></li>
-                <li><a href="{% url 'accounts.logout' %}"">Logout ({{ user.username }})</a></li>'
-
+                <li><a href="{% url 'applications.index' %}">My Applications</a></li>
+                <div class="vr white mx-2 d-none d-lg-block"></div>
+                <li><a href="{% url 'profile.edit' %}">My Profile</a></li>
+                <div class="vr white mx-2 d-none d-lg-block"></div>
+                <li><a href="{% url 'accounts.logout' %}">Logout ({{ user.username }})</a></li>
+                
                 {% else %}
-                <li><a href="{% url 'accounts.login' %}"">Login</a></li>
-                <li><a href="{% url 'accounts.signup' %}"">Sign Up</a></li>'
+                <li><a href="{% url 'accounts.login' %}">Login</a></li>
+                <div class="vr white mx-2 d-none d-lg-block"></div>
+                <li><a href="{% url 'accounts.signup' %}">Sign Up</a></li>
                 {% endif %}
 
             </ul>
         </nav>
-        <!-- Header -->
 
         {% block content %}
         {% endblock content %}
-        <!-- Footer -->
-        <!-- Footer -->
 
         <canvas id="starCanvas"></canvas>
 

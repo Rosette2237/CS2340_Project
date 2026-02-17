@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Job
 from .utils import calculate_match
-from django.db.models import Q
+from django.db.models import Q, Exists, OuterRef
 
 def job_list(request):
     jobs = Job.objects.all()
@@ -23,14 +23,31 @@ def job_list(request):
     if visa_query == 'on':
         jobs = jobs.filter(visa_sponsorship=True)
 
+    jobs = jobs.order_by("-posted_at")
+
     if request.user.is_authenticated:
-        try:
-            profile = request.user.profile
-            for job in jobs:
+        from applications.models import Application
+        jobs = jobs.annotate(
+            user_has_applied=Exists(
+                Application.objects.filter(
+                    job=OuterRef('pk'),
+                    user=request.user
+                )
+            )
+        )
+    
+        profile = getattr(request.user, "profile", None)
+        if profile is not None:
+            jobs_list = list(jobs)  # evaluate queryset once
+            for job in jobs_list:
                 job.match_percent = calculate_match(job.skills_required, profile.skills)
-            jobs = sorted(jobs, key=lambda x: (-x.match_percent, -x.posted_at.timestamp()))
-        except:
-            pass
+            jobs = sorted(
+                jobs_list,
+                key=lambda j: (
+                    -(getattr(j, "match_percent", 0) or 0),
+                    -j.posted_at.timestamp(),
+                ),
+            )
 
     context = {
         'jobs': jobs,
