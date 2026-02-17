@@ -15,20 +15,16 @@
             </a>
             <ul class="nav-links">
                 <li><a href="{% url 'jobs.index' %}">Explore Jobs</a></li>
-                <div class="vr white mx-2 d-none d-lg-block"></div>
                 <li><a href="{% url 'maps.index' %}">View Map</a></li>
                 <div class="vr white mx-2 d-none d-lg-block"></div>
 
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'applications.index' %}">My Applications</a></li>
-                <div class="vr white mx-2 d-none d-lg-block"></div>
                 <li><a href="{% url 'profile.edit' %}">My Profile</a></li>
-                <div class="vr white mx-2 d-none d-lg-block"></div>
                 <li><a href="{% url 'accounts.logout' %}">Logout ({{ user.username }})</a></li>
-                
+
                 {% else %}
                 <li><a href="{% url 'accounts.login' %}">Login</a></li>
-                <div class="vr white mx-2 d-none d-lg-block"></div>
                 <li><a href="{% url 'accounts.signup' %}">Sign Up</a></li>
                 {% endif %}
 
