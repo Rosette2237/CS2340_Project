@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-scroll-area">
+    <div class="jobs-list-wrapper" style="width: 90%; max-width: 1200px; margin: 50px auto;">
+        <h1 class="page-title">Explore Careers</h1>
+
+        <div class="filter-glass-card">
+            <form method="GET" action=".">
+                <div class="filter-group">
+                    <label class="filter-label">What are you looking for?</label>
+                    <input type="text" name="title" class="filter-custom-input" placeholder="Job Title or Keyword" value="{{ values.title }}">
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Where?</label>
+                    <input type="text" name="location" class="filter-custom-input" placeholder="City, State" value="{{ values.location }}">
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Job Type</label>
+                    <select name="job_type" class="filter-custom-input" style="appearance: auto;">
+                        <option value="">Any Type</option>
+                        <option value="remote" {% if values.job_type == 'remote' %}selected{% endif %}>Remote</option>
+                        <option value="onsite" {% if values.job_type == 'onsite' %}selected{% endif %}>On-site</option>
+                        <option value="hybrid" {% if values.job_type == 'hybrid' %}selected{% endif %}>Hybrid</option>
+                    </select>
+                </div>
+
+                <div class="search-button-wrapper">
+                    <button type="submit" class="btn-save" style="width: 100%; height: 65px; font-size: 1.1rem;">Search</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="jobs-grid">
+            {% for job in jobs %}
+            <div class="job-portrait-card">
+                <div>
+                    <div class="mb-3">
+                        <span class="badge border border-secondary text-secondary" style="font-size: 0.7rem; letter-spacing: 1px;">{{ job.get_job_type_display|upper }}</span>
+                    </div>
+                    <h2 style="font-family: 'Georgia', serif; font-size: 1.8rem; margin-bottom: 15px;">{{ job.title }}</h2>
+                    <p style="color: #b0b0b0; font-size: 0.95rem; line-height: 1.6;">
+                        {{ job.description|truncatewords:35 }}
+                    </p>
+                </div>
+
+                <div class="mt-4 pt-4 border-top border-secondary">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span style="color: #ffffff; font-weight: bold; font-size: 1.2rem;">${{ job.salary_min }} - ${{ job.salary_max }}</span>
+                        <span style="color: #00cfd5; font-size: 0.85rem;">{{ job.location }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        {% if job.visa_sponsorship %}
+                        <span class="badge bg-success" style="font-size: 0.7rem;">VISA SPONSORED</span>
+                        {% else %}
+                        <span></span>
+                        {% endif %}
+                        <small style="color: #555;">{{ job.posted_at|date:"M d" }}</small>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        {% if user.is_authenticated %}
+                            {% if job.user_has_applied %}
+                                <span style="color:#00cfd5; font-weight:bold;">Already Applied</span>
+                            {% else %}
+                                <a href="{% url 'applications.apply' job.id %}" 
+                                   class="btn-save" 
+                                   style="display:inline-block; padding:8px 12px; background-color:#4CAF50; color:white; text-decoration:none; border-radius:4px;">
+                                   Apply Now
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{% url 'accounts.login' %}" class="btn-save" 
+                               style="display:inline-block; padding:8px 12px; background-color:#4CAF50; color:white; text-decoration:none; border-radius:4px;">
+                               Log in to Apply
+                            </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p style="color: #ffffff; font-size: 1.2rem; white-space: nowrap; margin-bottom: 30px;">No star-worthy roles found for your search criteria.</p>
+                <a href="." class="btn-cancel" style="display: inline-block;">Clear All Filters</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

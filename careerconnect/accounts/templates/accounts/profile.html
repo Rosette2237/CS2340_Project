@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-scroll-area">
+    <div class="profile-card">
+        <h1 class="page-title">Edit Profile</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label class="form-label">Headline</label>
+            <input type="text" name="headline" class="custom-input" 
+                   value="{{ profile.headline }}" placeholder="e.g. Software Engineer | Georgia Tech Student">
+
+            <label class="form-label">Skills</label>
+            <textarea name="skills" class="custom-input" rows="4" 
+                    placeholder="Python, Django, React, Algorithms...">{{ profile.skills }}</textarea>
+
+            <label class="form-label">Education</label>
+            <textarea name="Education" class="custom-input" rows="4" 
+                    placeholder="University Name, Major...">{{ profile.education }}</textarea>
+
+            <label class="form-label">Work Experience</label>
+            <textarea name="work_experience" class="custom-input" rows="5"
+                    placeholder="Briefly describe internships, research projects, or leadership roles...">{{ profile.work_experience }}</textarea>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label">LinkedIn URL</label>
+                    <input type="url" name="linkedin_link" class="custom-input" 
+                    value="{{ profile.linkedin_link }}" placeholder="https://linkedin.com/in/your-username">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Portfolio URL</label>
+                    <input type="url" name="portfolio_link" class="custom-input" 
+                    value="{{ profile.portfolio_link }}" placeholder="https://yourdomain.com or https://github.com/your-username">
+                </div>
+            </div>
+
+            <div class="button-row">
+                <a href="/" class="btn-cancel">Cancel</a>
+                <button type="submit" class="btn-save">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
