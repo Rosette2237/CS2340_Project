@@ -1,5 +1,5 @@
 .vr.white {
-    background-color: black;
+    background-color: #e8eef9;
     opacity: 0.75;
     width: 2px;
     height: 30px;
@@ -7,14 +7,14 @@
 }
 
 body{
-    background-color: black;
+    background-color: #0b1020;
     overflow: hidden;
     margin: 0;
-}            
+}
 .content {
     position: absolute;
     text-align: center;
-    color: white;
+    color: #e8eef9;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -22,16 +22,22 @@ body{
 }
 
 h1 {
+    color: #e8eef9;
     font-size: 75px;
+    font-family: 'Sora', 'Times New Roman', serif;
 }
 
 h3 {
+    color: #e8eef9;
     font-size: 30px;
-
+    font-family: 'Sora', 'Times New Roman', serif;
 }
+
 p {
     font-size: 20px;
+    font-family: 'Sora', 'Times New Roman', serif;
 }
+
 nav {
     display: flex;
     justify-content: space-between;
@@ -42,30 +48,36 @@ nav {
     top: 0;
     left: 0;
     box-sizing: border-box;
-    height:100px;
-    background-color:rgba(211, 211, 211, 0.8);
+    height:70px;
+    background-color: #1c2e4a;
 }
 
 .logo {
-    color: black;
+    color: #e8eef9;
     font-size: 24px;
     font-weight: bold;
     text-decoration: none;
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Space Grotesk', 'Times New Roman', serif;
+}
 
+.logo img {
+    margin-top: 5px;
 }
 
 .nav-links {
+    list-style: none;
     display: flex;
     gap: 30px;
+    padding-top: 9px;
+    font-family: 'Space Grotesk', 'Times New Roman', serif;
 }
 
 .nav-links a {
-    color: black;
+    color: #e8eef9;
     text-decoration: none;
     font-size: 18px;
     transition: opacity 0.2s;
-    
+
 }
 
 .nav-links a:hover {

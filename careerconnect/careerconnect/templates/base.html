@@ -2,23 +2,27 @@
     <html>
     {% load static %}
     <head>
-        <title>Career Connect</title>
-        <link rel="stylesheet" type="text/css"
-        href="{% static 'css/style.css' %}">
+        <title>CareerConnect</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     </head>
     <body>
         <nav>
-            <a href="/" class="logo">CareerConnect</a>
+            <a class="logo" href="/">
+                <img src="{% static 'img/CCLogo.png' %}" alt="CareerConnect" height="225" />
+            </a>
             <ul class="nav-links">
-                <li><a href="{% url 'jobs.index' %}">Jobs</a></li>
+                <li><a href="{% url 'jobs.index' %}">Explore Jobs</a></li>
                 <div class="vr white mx-2 d-none d-lg-block"></div>
-                <li><a href="{% url 'maps.index' %}">Map</a></li>
+                <li><a href="{% url 'maps.index' %}">View Map</a></li>
                 <div class="vr white mx-2 d-none d-lg-block"></div>
 
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'applications.index' %}">My Applications</a></li>
                 <div class="vr white mx-2 d-none d-lg-block"></div>
-                <li><a href="{% url 'profile.edit' %}">Profile</a></li>
+                <li><a href="{% url 'profile.edit' %}">My Profile</a></li>
                 <div class="vr white mx-2 d-none d-lg-block"></div>
                 <li><a href="{% url 'accounts.logout' %}">Logout ({{ user.username }})</a></li>
                 
@@ -39,18 +43,18 @@
         <script>
             const canvas = document.getElementById('starCanvas');
             const ctx = canvas.getContext('2d');
-        
+
             let stars = [];
             const numStars = 400;
-        
+
             function resize() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             }
-        
+
             window.addEventListener('resize', resize);
             resize();
-        
+
             class Star {
                 constructor() {
                     this.x = Math.random() * canvas.width;
@@ -61,7 +65,7 @@
                     this.pulseTimer = Math.random() * 0.05;
                     this.maxScale = 2;
                 }
-        
+
                 update() {
                     this.timer += this.pulseTimer;
                     let pulse = Math.sin(this.timer);
@@ -75,16 +79,16 @@
                     ctx.fill();
                     ctx.closePath();
                 }
-        
+
             }
-        
+
             function init() {
                 stars = [];
                 for (let i = 0; i < numStars; i++) {
                     stars.push(new Star());
                 }
             }
-        
+
             function animate() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 stars.forEach(star => {
@@ -93,7 +97,7 @@
                     });
                 requestAnimationFrame(animate);
             }
-        
+
             init();
             animate();
         </script>
