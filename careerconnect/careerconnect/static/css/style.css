@@ -27,6 +27,16 @@ h1 {
     font-family: 'Sora', 'Times New Roman', serif;
 }
 
+h1[class] {
+    color: #e8eef9;
+    font-family: 'Sora', 'Times New Roman', serif;
+}
+
+h2 {
+    color: #e8eef9;
+    font-family: 'Sora', 'Times New Roman', serif;
+}
+
 h3 {
     color: #e8eef9;
     font-size: 30px;
