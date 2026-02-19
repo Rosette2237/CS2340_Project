@@ -42,7 +42,7 @@ def login(request):
         else:
             auth_login(request, user)
             return redirect('home.index')
-        
+
 def signup(request):
     template_data = {}
     template_data['title'] = 'Sign Up'
@@ -52,8 +52,9 @@ def signup(request):
     elif request.method == 'POST':
         form = CustomUserCreationForm(request.POST, error_class=CustomErrorList)
         if form.is_valid():
-            form.save()
-            return redirect('accounts.login')
+            user = form.save()
+            auth_login(request, user)
+            return redirect('profile.edit')
         else:
             template_data['form'] = form
             return render(request, 'accounts/signup.html',  {'template_data': template_data})
