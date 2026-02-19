@@ -10,6 +10,7 @@ class Profile(models.Model):
     work_experience = models.TextField(help_text="Details about your work history", blank=True)
     linkedin_link = models.URLField(blank=True)
     portfolio_link = models.URLField(blank=True)
+    is_public = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"

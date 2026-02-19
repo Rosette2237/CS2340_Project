@@ -48,6 +48,10 @@ p {
     font-family: 'Sora', 'Times New Roman', serif;
 }
 
+a:visited {
+    color:#00cfd5
+}
+
 nav {
     display: flex;
     justify-content: space-between;

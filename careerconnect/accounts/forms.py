@@ -26,8 +26,8 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         # These fields must match the names in models.py
-        fields = ['headline', 'skills', 'education', 'work_experience', 'linkedin_link', 'portfolio_link']
-        
+        fields = ['headline', 'skills', 'education', 'work_experience', 'linkedin_link', 'portfolio_link', 'is_public']
+
         # This adds the styling and placeholders directly to the form
         widgets = {
             'headline': forms.TextInput(attrs={'class': 'custom-input', 'placeholder': 'e.g. Software Engineer'}),
