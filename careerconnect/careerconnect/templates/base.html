@@ -14,18 +14,25 @@
                 <img src="{% static 'img/CCLogo.png' %}" alt="CareerConnect" height="225" />
             </a>
             <ul class="nav-links">
-                <li><a href="{% url 'jobs.index' %}">Explore Jobs</a></li>
-                <li><a href="{% url 'maps.index' %}">View Map</a></li>
-                <div class="vr white mx-2 d-none d-lg-block"></div>
+                <li><a href="{% url 'jobs:index' %}">Explore Jobs</a></li>
 
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'applications.index' %}">My Applications</a></li>
-                <li><a href="{% url 'profile.edit' %}">My Profile</a></li>
-                <li><a href="{% url 'accounts.logout' %}">Logout ({{ user.username }})</a></li>
+                    {% if user.profile.is_recruiter %}
+                        <li><a href="{% url 'jobs:create' %}">Post a Job</a></li>
+                        <li><a href="{% url 'jobs:recruiter_jobs' %}">My Posted Jobs</a></li>
+                        <li><a href="{% url 'accounts.search' %}">Find Candidates</a></li>
+                    {% else %}                    
+                        <li><a href="{% url 'maps.index' %}">View Map</a></li>
+                        <li><a href="{% url 'applications.index' %}">My Applications</a></li>
+                        <li><a href="{% url 'profile.edit' %}">My Profile</a></li>
+                    {% endif %}
+                    <div class="vr white mx-2 d-none d-lg-block"></div>
+                    <li><a href="{% url 'accounts.logout' %}">Logout ({{ user.username }})</a></li>
 
                 {% else %}
-                <li><a href="{% url 'accounts.login' %}">Login</a></li>
-                <li><a href="{% url 'accounts.signup' %}">Sign Up</a></li>
+                    <li><a href="{% url 'maps.index' %}">View Map</a></li>
+                    <li><a href="{% url 'accounts.login' %}">Login</a></li>
+                    <li><a href="{% url 'accounts.signup' %}">Sign Up</a></li>
                 {% endif %}
 
             </ul>

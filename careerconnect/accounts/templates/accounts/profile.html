@@ -9,6 +9,9 @@
 
         <form method="POST">
             {% csrf_token %}
+            <label class="form-label">Location</label>
+            <input type="text" name="location" class="custom-input"
+                   value="{{ profile.location }}" placeholder="e.g. Atlanta, GA">
 
             <label class="form-label">Headline</label>
             <input type="text" name="headline" class="custom-input"

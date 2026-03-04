@@ -1,5 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 from .models import Job
+from accounts.models import Profile
+from .forms import JobForm
 from .utils import calculate_match
 from django.db.models import Q, Exists, OuterRef
 
@@ -54,3 +58,44 @@ def job_list(request):
         'values': request.GET
     }
     return render(request, 'jobs/job_list.html', context)
+
+@login_required
+def create_job(request):
+    if not getattr(request.user.profile, 'is_recruiter', False):
+        return HttpResponseForbidden("Only recruiters can post jobs.")
+    
+    if request.method == 'POST':
+        form = JobForm(request.POST)
+        if form.is_valid():
+            job = form.save(commit = False)
+            job.recruiter = request.user
+            job.save()
+            return redirect('jobs:index')
+    else:
+        form = JobForm()
+    return render(request, 'jobs/job_form.html', {'form': form})
+
+@login_required
+def edit_job(request, job_id):
+    job = get_object_or_404(Job, id=job_id)
+
+    if request.user != job.recruiter:
+        return HttpResponseForbidden("You can only edit your own job postings.")
+    
+    if request.method == 'POST':
+        form = JobForm(request.POST, instance=job)
+        if form.is_valid():
+            job.save()
+            return redirect('jobs:index')
+    else:
+        form = JobForm(instance=job)
+    return render(request, 'jobs/job_form.html', {'form': form})
+
+@login_required
+def recruiter_jobs(request):
+    if not getattr(request.user.profile, 'is_recruiter', False):
+        return HttpResponseForbidden("Only recruiters can view this page.")
+        
+    jobs = Job.objects.filter(recruiter=request.user).order_by('-posted_at')
+    
+    return render(request, 'jobs/recruiter_jobs.html', {'jobs': jobs})

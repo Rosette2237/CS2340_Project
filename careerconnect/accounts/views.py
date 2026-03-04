@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 from .forms import CustomUserCreationForm, CustomErrorList, ProfileForm
 
 from .models import Profile
@@ -58,3 +59,27 @@ def signup(request):
         else:
             template_data['form'] = form
             return render(request, 'accounts/signup.html',  {'template_data': template_data})
+
+
+@login_required
+def search_candidates(request):
+    if not getattr(request.user.profile, 'is_recruiter', False):
+        return HttpResponseForbidden("Only recruiters can search for candidates.")
+    
+    candidates = Profile.objects.filter(is_recruiter=False, is_public=True)
+
+    skills_query = request.GET.get('skills')
+    location_query = request.GET.get('location')
+
+    if skills_query:
+        candidates = candidates.filter(skills__icontains=skills_query)
+    
+    if location_query:
+        candidates = candidates.filter(location__icontains=location_query)
+    
+    context = {
+        'candidates': candidates,
+        'values': request.GET
+    }
+
+    return render(request, 'accounts/candidate_search.html', context)

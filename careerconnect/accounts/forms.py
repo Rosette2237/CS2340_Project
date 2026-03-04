@@ -13,6 +13,11 @@ class CustomErrorList(ErrorList):
         return mark_safe(''.join([
             f'<div class="alert alert-danger" role="alert">{e}</div>' for e in self]))
 class CustomUserCreationForm(UserCreationForm):
+    is_recruiter = forms.BooleanField(
+        required=False,
+        label="I am a Recruiter",
+        help_text="Check this box if you are a recruiter"
+    )
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
         for fieldname in ['username', 'password1', 'password2']:
@@ -20,6 +25,7 @@ class CustomUserCreationForm(UserCreationForm):
             self.fields[fieldname].widget.attrs.update(
                 {'class': 'custom-input'}
             )
+        self.fields['is_recruiter'].widget.attrs.update({'class': 'custom-checkbox'})
 
 
 class ProfileForm(forms.ModelForm):
