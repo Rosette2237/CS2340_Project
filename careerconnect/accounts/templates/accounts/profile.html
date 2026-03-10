@@ -9,9 +9,22 @@
 
         <form method="POST">
             {% csrf_token %}
-            <label class="form-label">Location</label>
-            <input type="text" name="location" class="custom-input"
-                   value="{{ profile.location }}" placeholder="e.g. Atlanta, GA">
+            <label class="form-label">Address <span style="font-weight:400; text-transform:none; letter-spacing:0; color:#666; font-size:0.8rem;">(optional)</span></label>
+            <input type="text" name="address" class="custom-input"
+                   value="{{ profile.address }}" placeholder="e.g. 123 Main St">
+
+            <div style="display:flex; gap:20px;">
+                <div style="flex:2; min-width:0;">
+                    <label class="form-label">City</label>
+                    <input type="text" name="city" class="custom-input"
+                           value="{{ profile.city }}" placeholder="e.g. Atlanta">
+                </div>
+                <div style="flex:1; min-width:0;">
+                    <label class="form-label">State</label>
+                    <input type="text" name="state" class="custom-input"
+                           value="{{ profile.state }}" placeholder="e.g. GA">
+                </div>
+            </div>
 
             <label class="form-label">Headline</label>
             <input type="text" name="headline" class="custom-input"

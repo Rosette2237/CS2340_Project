@@ -101,89 +101,101 @@ nav {
 #map-box {
     height: 100%;
     min-height: 520px;
-    border: 1px solid #ccc;
+    border: 1px solid #333;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     overflow: hidden;
 }
 
-.map-page {
+/* ── Map page: full-width title, then sidebar + map ─── */
+.map-page-wrapper {
     width: 90%;
     max-width: 1400px;
-    margin: 30px auto 80px auto;
-    display: grid;
-    grid-template-columns: 360px 1fr;
-    gap: 28px;
-    height: calc(100vh - 160px);
+    margin: 24px auto 60px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: calc(100vh - 150px);
     position: relative;
     z-index: 2;
 }
 
+.map-page-title {
+    font-size: 2.4rem;
+    text-align: left;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+/* ── Body: sidebar left, map right (map is main) ─────── */
+.map-body {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex: 1;
+    min-height: 0;
+}
+
+/* ── Sidebar: compact filter on top, job list below ──── */
 .map-sidebar {
+    width: 360px;
+    flex-shrink: 0;
     background-color: rgba(26, 26, 26, 0.9);
     border: 1px solid #333;
     border-radius: 16px;
-    padding: 26px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 14px;
     color: #ffffff;
     overflow: hidden;
 }
 
-.map-sidebar-header {
+.map-filter-section {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    flex-shrink: 0;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #2a2a2a;
 }
 
-.map-title {
-    margin: 0;
-    font-size: 2.2rem;
-}
-
-.map-subtitle {
-    margin: 0;
-    color: #b0b0b0;
+.map-select-compact {
+    height: 44px;
     font-size: 0.95rem;
+    font-family: sans-serif;
+    padding: 0 14px;
 }
 
-.map-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.map-select {
-    height: 52px;
-}
-
-.map-button {
+.map-button-compact {
     width: 100%;
-    height: 52px;
-    font-size: 1rem;
+    height: 44px;
+    font-size: 0.9rem;
+    font-family: sans-serif;
+    padding: 0;
 }
 
 .map-status {
-    margin: 0;
     color: #8a8a8a;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
+    font-family: sans-serif;
 }
 
+/* ── Job list (scrollable, fills remaining sidebar) ───── */
 .map-job-list {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     overflow-y: auto;
+    flex: 1;
 }
 
 .map-job-card {
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid #333;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #2a2a2a;
     background-color: #141414;
     cursor: pointer;
     transition: transform 0.2s ease, border-color 0.2s ease;
@@ -195,29 +207,38 @@ nav {
 }
 
 .map-job-title {
-    font-size: 1.05rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
     font-weight: 600;
-    margin-bottom: 6px;
+    color: #ffffff;
+    margin: 0 0 4px 0;
 }
 
 .map-job-meta {
+    font-family: sans-serif;
     color: #b0b0b0;
-    font-size: 0.85rem;
-    margin-bottom: 6px;
+    font-size: 0.82rem;
+    margin: 0 0 4px 0;
 }
 
 .map-job-distance {
+    font-family: sans-serif;
     color: #00cfd5;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
+    margin: 0;
 }
 
 .map-empty {
+    font-family: sans-serif;
     color: #b0b0b0;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     display: none;
 }
 
+/* ── Map panel (main widget) ─────────────────────────── */
 .map-panel {
+    flex: 1;
+    min-width: 0;
     border-radius: 16px;
     border: 1px solid #333;
     overflow: hidden;
@@ -225,8 +246,15 @@ nav {
 }
 
 @media (max-width: 900px) {
-    .map-page {
-        grid-template-columns: 1fr;
+    .map-body {
+        flex-direction: column;
+    }
+
+    .map-sidebar {
+        width: 100%;
+    }
+
+    .map-page-wrapper {
         height: auto;
     }
 
@@ -315,6 +343,7 @@ nav {
     border: 1px solid #444 !important;
     color: #ffffff !important;
     width: 100%;
+    box-sizing: border-box;
     padding: 1.1rem !important;
     border-radius: 6px;
     margin-bottom: 2.5rem;
@@ -435,6 +464,68 @@ nav {
 .search-button-wrapper {
     margin-top: 40px;
     display: flex;
+}
+
+/* ── Recruiter map legend ─────────────────────────────── */
+.map-legend-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.map-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.map-legend-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+    opacity: 0.85;
+}
+
+.map-legend-label {
+    font-family: sans-serif;
+    font-size: 0.85rem;
+    color: #b0b0b0;
+}
+
+/* ── Recruiter map legend ─────────────────────────────── */
+.map-legend-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.map-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.map-legend-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+    opacity: 0.85;
+}
+
+.map-legend-label {
+    font-family: sans-serif;
+    font-size: 0.85rem;
+    color: #b0b0b0;
 }
 
 .message-btn {
