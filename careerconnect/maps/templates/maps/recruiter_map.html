@@ -35,7 +35,10 @@
           <li class="map-job-card" id="job-item-{{ job.id }}">
             <div class="map-job-title">{{ job.title }}</div>
             <div class="map-job-meta">{{ job.city }}{% if job.city and job.state %}, {% endif %}{{ job.state }}</div>
-            <div class="map-job-meta">{{ job.applicant_count }} applicant{{ job.applicant_count|pluralize }}</div>
+            <div class="map-job-meta" style="display:flex; justify-content:space-between; gap:8px;">
+              <span>{{ job.applicant_count }} applicant{{ job.applicant_count|pluralize }}</span>
+              <span style="color:#ff9800;">{{ job.mapped_count }} on map</span>
+            </div>
             {% if not job.has_location %}
             <div style="color:#ff6b6b; font-size:0.78rem; font-family:sans-serif; margin-top:4px;">
               No office location — <a href="{% url 'jobs:edit' job.id %}" style="color:#ff9800;">set location</a>

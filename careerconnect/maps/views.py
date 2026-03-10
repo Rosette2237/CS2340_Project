@@ -31,6 +31,23 @@ def recruiter_map(request):
 
     recruiter_jobs = Job.objects.filter(recruiter=request.user).order_by('-posted_at')
 
+    # Count mapped applicants per job (applicants with geocoded profiles)
+    mapped_counts = {}
+    applicant_locations = []
+    for application in (Application.objects
+                        .filter(job__recruiter=request.user)
+                        .select_related('user__profile', 'job')):
+        profile = getattr(application.user, 'profile', None)
+        job_id = application.job_id
+        if profile and profile.location_lat and profile.location_long:
+            mapped_counts[job_id] = mapped_counts.get(job_id, 0) + 1
+            applicant_locations.append({
+                'job_id': job_id,
+                'job_title': application.job.title,
+                'lat': float(profile.location_lat),
+                'lng': float(profile.location_long),
+            })
+
     # Build sidebar job list and geocoded office pins
     jobs_sidebar = []
     job_locations = []
@@ -42,6 +59,7 @@ def recruiter_map(request):
             'city': job.city,
             'state': job.state,
             'applicant_count': applicant_count,
+            'mapped_count': mapped_counts.get(job.id, 0),
             'has_location': bool(job.location_lat and job.location_long),
         })
         if job.location_lat and job.location_long:
@@ -51,19 +69,6 @@ def recruiter_map(request):
                 'location': f"{job.city}, {job.state}",
                 'lat': float(job.location_lat),
                 'lng': float(job.location_long),
-            })
-
-    # Build applicant location pins (from applicants' profiles)
-    applicant_locations = []
-    for application in (Application.objects
-                        .filter(job__recruiter=request.user)
-                        .select_related('user__profile', 'job')):
-        profile = getattr(application.user, 'profile', None)
-        if profile and profile.location_lat and profile.location_long:
-            applicant_locations.append({
-                'job_title': application.job.title,
-                'lat': float(profile.location_lat),
-                'lng': float(profile.location_long),
             })
 
     return render(request, 'maps/recruiter_map.html', {
