@@ -9,13 +9,22 @@ from .models import Profile
 # Create your views here.
 @login_required
 def edit_profile(request):
+    from jobs.geocoding import geocode_job
     profile, created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
-            form = ProfileForm(request.POST, instance=profile)
-            if form.is_valid():
-                form.save()
-                return redirect('profile.edit')
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            if profile.city or profile.state:
+                lat, lng = geocode_job(profile.address, profile.city, profile.state)
+                profile.location_lat = lat
+                profile.location_long = lng
+            else:
+                profile.location_lat = None
+                profile.location_long = None
+            profile.save()
+            return redirect('profile.edit')
     else:
         form = ProfileForm(instance=profile)
 
@@ -54,6 +63,9 @@ def signup(request):
         form = CustomUserCreationForm(request.POST, error_class=CustomErrorList)
         if form.is_valid():
             user = form.save()
+            profile, _ = Profile.objects.get_or_create(user=user)
+            profile.is_recruiter = form.cleaned_data.get('is_recruiter', False)
+            profile.save()
             auth_login(request, user)
             return redirect('profile.edit')
         else:
@@ -69,14 +81,16 @@ def search_candidates(request):
     candidates = Profile.objects.filter(is_recruiter=False, is_public=True)
 
     skills_query = request.GET.get('skills')
-    location_query = request.GET.get('location')
+    city_query = request.GET.get('city')
+    state_query = request.GET.get('state')
 
     if skills_query:
         candidates = candidates.filter(skills__icontains=skills_query)
-    
-    if location_query:
-        candidates = candidates.filter(location__icontains=location_query)
-    
+    if city_query:
+        candidates = candidates.filter(city__icontains=city_query)
+    if state_query:
+        candidates = candidates.filter(state__icontains=state_query)
+
     context = {
         'candidates': candidates,
         'values': request.GET

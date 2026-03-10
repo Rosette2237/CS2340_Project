@@ -31,11 +31,12 @@ class CustomUserCreationForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        # These fields must match the names in models.py
-        fields = ['headline', 'skills', 'education', 'work_experience', 'linkedin_link', 'portfolio_link', 'is_public']
+        fields = ['address', 'city', 'state', 'headline', 'skills', 'education', 'work_experience', 'linkedin_link', 'portfolio_link', 'is_public']
 
-        # This adds the styling and placeholders directly to the form
         widgets = {
+            'address': forms.TextInput(attrs={'class': 'custom-input', 'placeholder': 'e.g. 123 Main St (optional)'}),
+            'city': forms.TextInput(attrs={'class': 'custom-input', 'placeholder': 'e.g. Atlanta'}),
+            'state': forms.TextInput(attrs={'class': 'custom-input', 'placeholder': 'e.g. GA'}),
             'headline': forms.TextInput(attrs={'class': 'custom-input', 'placeholder': 'e.g. Software Engineer'}),
             'skills': forms.Textarea(attrs={'class': 'custom-input', 'rows': 4, 'placeholder': 'Python, Django...'}),
             'education': forms.Textarea(attrs={'class': 'custom-input', 'rows': 4}),

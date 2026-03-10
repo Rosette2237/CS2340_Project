@@ -12,6 +12,11 @@ class Profile(models.Model):
     linkedin_link = models.URLField(blank=True)
     portfolio_link = models.URLField(blank=True)
     is_public = models.BooleanField(default=True)
+    address = models.CharField(max_length=300, blank=True, help_text="Street address (optional)")
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    location_lat = models.DecimalField(decimal_places=6, max_digits=9, null=True, blank=True)
+    location_long = models.DecimalField(decimal_places=6, max_digits=9, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
