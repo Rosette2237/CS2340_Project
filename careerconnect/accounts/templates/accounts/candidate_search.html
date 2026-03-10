@@ -28,7 +28,7 @@
             {% for candidate in candidates %}
             <div class="job-portrait-card">
                 <div>
-                    <h2 style="font-family: 'Sora', serif; font-size: 1.8rem; margin-bottom: 5px;">{{ candidate.user.first_name }} {{ candidate.user.last_name }}</h2>
+                    <h2 style="font-family: 'Sora', serif; font-size: 1.8rem; margin-bottom: 5px;">{{ candidate.user.username }}</h2>
                     <h4 style="color: #00cfd5; font-size: 1rem; margin-bottom: 15px;">{{ candidate.headline }}</h4>
                     
                     <p style="color: #888; font-size: 0.85rem;">SKILLS</p>
@@ -40,7 +40,16 @@
                         {{ candidate.work_experience|truncatewords:20 }}
                     </p>
                 </div>
+                {% if request.user.profile.is_recruiter %}
+                    <a href="{% url 'start_conversation' candidate.id %}" class="message-btn">
+                        Message {{ candidate.user.username }}
+                    </a>
 
+                    <a href="mailto:{{ candidate.user.email }}"class="message-btn">
+                        Email {{ candidate.user.username }}
+                    </a>
+                {% endif %}
+            
                 <div class="mt-4 pt-4 border-top border-secondary">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <span style="color: #ffffff; font-size: 0.85rem;">📍 {{ candidate.location|default:"No Location Provided" }}</span>
