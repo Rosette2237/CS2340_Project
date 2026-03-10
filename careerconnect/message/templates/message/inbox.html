@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="messaging-wrapper">
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Messages</h2>
+            <p>{{ conversations|length }} conversation{{ conversations|length|pluralize }}</p>
+        </div>
+        <div class="conv-list">
+            {% for conv in conversations %}
+                {% if request.user.profile.is_recruiter %}
+                    {% with other=conv.applicant %}
+                    <a class="conv-item {% if active_conv and active_conv.id == conv.id %}active{% endif %}"
+                       href="?conv={{ conv.id }}">
+                        <div class="conv-avatar">{{ other.user.username|first|upper }}</div>
+                        <div class="conv-details">
+                            <div class="conv-name">{{ other.user.username }}</div>
+                            <div class="conv-preview">
+                                {% with last=conv.messages.last %}
+                                    {% if last %}{{ last.body }}{% else %}No messages yet{% endif %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                        <div class="conv-time">
+                            {% with last=conv.messages.last %}
+                                {% if last %}{{ last.time_stamp|time:"H:i" }}{% endif %}
+                            {% endwith %}
+                        </div>
+                    </a>
+                    {% endwith %}
+                {% else %}
+                    {% with other=conv.recruiter %}
+                    <a class="conv-item {% if active_conv and active_conv.id == conv.id %}active{% endif %}"
+                       href="?conv={{ conv.id }}">
+                        <div class="conv-avatar">{{ other.user.username|first|upper }}</div>
+                        <div class="conv-details">
+                            <div class="conv-name">{{ other.user.username }}</div>
+                            <div class="conv-preview">
+                                {% with last=conv.messages.last %}
+                                    {% if last %}{{ last.body }}{% else %}No messages yet{% endif %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                        <div class="conv-time">
+                            {% with last=conv.messages.last %}
+                                {% if last %}{{ last.time_stamp|time:"H:i" }}{% endif %}
+                            {% endwith %}
+                        </div>
+                    </a>
+                    {% endwith %}
+                {% endif %}
+            {% empty %}
+                <div class="no-convs">
+                    <span>💬</span>
+                    No conversations yet
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="chat-main">
+        {% if active_conv %}
+            <div class="chat-header">
+                <div class="chat-header-avatar">{{ other_user.user.username|first|upper }}</div>
+                <div>
+                    <div class="chat-header-name">{{ other_user.user.username }}</div>
+                    <div class="chat-header-role">
+                        {% if other_user.is_recruiter %}Recruiter{% else %}Applicant{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="messages-area" id="messages">
+                {% for msg in messages %}
+                    <div class="message-row {% if msg.sender == request.user.profile %}sent{% else %}received{% endif %}">
+                        {% if msg.sender != request.user.profile %}
+                            <div class="msg-avatar">{{ msg.sender.user.username|first|upper }}</div>
+                        {% endif %}
+                        <div class="bubble">
+                            {{ msg.body }}
+                            <span class="bubble-time">{{ msg.time_stamp|time:"H:i" }}</span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div style="text-align:center; color:rgba(255,255,255,0.2); margin:auto; font-size:13px; font-family:'Sora',sans-serif;">
+                        Say hello 👋
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Input -->
+            <div class="input-area">
+                <textarea id="message-input" class="message-input" placeholder="Type a message..." rows="1"></textarea>
+                <button class="send-btn" id="send-btn">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </div>
+
+        {% else %}
+            <div class="chat-empty">
+                <span>✉️</span>
+                <p>Select a conversation to start chatting</p>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% if active_conv %}
+<script>
+    const currentProfileId = "{{ request.user.profile.id }}";
+    const csrfToken = "{{ csrf_token }}";
+    const sendUrl = "{% url 'send_message' active_conv.id %}";
+    const pollUrl = "{% url 'poll_messages' active_conv.id %}";
+
+    const messagesEl = document.getElementById('messages');
+    const inputEl = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    let lastId = "{{ messages.last.id|default:0 }}";
+
+    function scrollToBottom() {
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/\n/g, '<br>');
+    }
+
+    function appendMessage(body, time, isSent) {
+        const row = document.createElement('div');
+        row.className = `message-row ${isSent ? 'sent' : 'received'}`;
+
+        if (!isSent) {
+            const av = document.createElement('div');
+            av.className = 'msg-avatar';
+            av.textContent = '?';
+            row.appendChild(av);
+        }
+
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.innerHTML = `${escapeHtml(body)}<span class="bubble-time">${time}</span>`;
+        row.appendChild(bubble);
+        messagesEl.appendChild(row);
+        scrollToBottom();
+    }
+
+    async function sendMessage() {
+        const body = inputEl.value.trim();
+        if (!body) return;
+        inputEl.value = '';
+        inputEl.style.height = 'auto';
+
+        // Show immediately (optimistic)
+        const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        appendMessage(body, now, true);
+
+        try {
+            const res = await fetch(sendUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+                body: JSON.stringify({ body }),
+            });
+            const data = await res.json();
+            if (data.id) lastId = Math.max(lastId, data.id);
+        } catch (err) {
+            console.error('Send failed:', err);
+        }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    inputEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
+    inputEl.addEventListener('input', () => {
+        inputEl.style.height = 'auto';
+        inputEl.style.height = Math.min(inputEl.scrollHeight, 110) + 'px';
+    });
+
+    async function poll() {
+        try {
+            const res = await fetch(`${pollUrl}?last_id=${lastId}`);
+            const data = await res.json();
+            if (data.messages && data.messages.length > 0) {
+                data.messages.forEach(msg => {
+                    appendMessage(msg.body, msg.timestamp, false);
+                    lastId = Math.max(lastId, msg.id);
+                });
+            }
+        } catch (err) { console.error('Poll failed:', err); }
+    }
+
+    setInterval(poll, 3000);
+    scrollToBottom();
+</script>
+{% endif %}
+
+{% endblock content %}
