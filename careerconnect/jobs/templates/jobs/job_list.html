@@ -79,21 +79,23 @@
                         {% if user.is_authenticated %}
                             {% if user == job.recruiter %}
                                 <a href="{% url 'jobs:edit' job.id %}" class="btn-save"
-                                    style="display:inline-block; padding:8px 12px; background-color:#ff9800; color:white; text-decoration:none; border-radius:4px;">
-                                    Edit Job
-                                    </a>
+                                    style="display:inline-block; padding:8px 12px; background-color:#ff9800; color:white; text-decoration:none; border-radius:4px; font-size:0.95rem;">
+                                    Change this job posting
+                                </a>
+                            {% elif is_recruiter %}
+                                {# recruiter viewing another poster's job — no action #}
                             {% elif job.user_has_applied %}
-                                <span style="color:#00cfd5; font-weight:bold;">Already Applied</span>
+                                <span style="color:#00cfd5; font-weight:bold; font-size:0.95rem;">Already Applied</span>
                             {% else %}
                                 <a href="{% url 'applications.apply' job.id %}"
-                                class="btn-save"
-                                style="display:inline-block; padding:8px 12px; background-color:#4CAF50; color:white; text-decoration:none; border-radius:4px;">
-                                Apply Now
+                                   class="btn-save"
+                                   style="display:inline-block; padding:8px 12px; background-color:#4CAF50; color:white; text-decoration:none; border-radius:4px; font-size:0.95rem;">
+                                    Apply Now
                                 </a>
                             {% endif %}
                         {% else %}
                             <a href="{% url 'accounts.login' %}" class="btn-save"
-                               style="display:inline-block; padding:8px 12px; background-color:#4CAF50; color:white; text-decoration:none; border-radius:4px;">
+                               style="display:inline-block; padding:8px 12px; background-color:#4CAF50; color:white; text-decoration:none; border-radius:4px; font-size:0.95rem;">
                                Log in to Apply
                             </a>
                         {% endif %}

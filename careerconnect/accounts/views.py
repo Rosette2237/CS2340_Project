@@ -72,14 +72,10 @@ def search_candidates(request):
     candidates = Profile.objects.filter(is_recruiter=False, is_public=True)
 
     skills_query = request.GET.get('skills')
-    location_query = request.GET.get('location')
 
     if skills_query:
         candidates = candidates.filter(skills__icontains=skills_query)
-    
-    if location_query:
-        candidates = candidates.filter(location__icontains=location_query)
-    
+
     context = {
         'candidates': candidates,
         'values': request.GET

@@ -11,19 +11,31 @@
             
             {% for field in form %}
                 <div style="margin-bottom: 20px;">
-                    <label class="form-label">{{ field.label }}</label>
-                    
+                    <label class="form-label" style="font-size: 0.95rem;">{{ field.label }}</label>
+
                     {% if field.name == 'description' %}
-                        <textarea name="{{ field.name }}" class="custom-input" rows="5">{{ field.value|default_if_none:"" }}</textarea>
+                        <textarea name="{{ field.name }}" class="custom-input" rows="5" style="font-size: 0.95rem;">{{ field.value|default_if_none:"" }}</textarea>
                     {% elif field.name == 'job_type' %}
-                        {{ field }} {% elif field.name == 'visa_sponsorship' %}
-                        <input type="checkbox" name="{{ field.name }}" {% if field.value %}checked{% endif %}>
+                        <select name="{{ field.name }}" class="custom-input" style="appearance: auto; font-size: 0.95rem;">
+                            {% for val, label in field.field.choices %}
+                                <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    {% elif field.name == 'visa_sponsorship' %}
+                        <div style="margin-top: 6px;">
+                            <input type="checkbox" name="{{ field.name }}" {% if field.value %}checked{% endif %} style="width: 16px; height: 16px; cursor: pointer;">
+                        </div>
                     {% else %}
-                        <input type="text" name="{{ field.name }}" class="custom-input" value="{{ field.value|default_if_none:"" }}">
+                        <input type="text" name="{{ field.name }}" class="custom-input" value="{{ field.value|default_if_none:"" }}" style="font-size: 0.95rem;">
                     {% endif %}
-                    
+
                     {% if field.help_text %}
-                        <small style="color: #888;">{{ field.help_text }}</small>
+                        <small style="color: #888; font-size: 0.85rem;">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <small style="color: #ff6b6b; font-size: 0.85rem; display: block; margin-top: 4px;">{{ error }}</small>
+                        {% endfor %}
                     {% endif %}
                 </div>
             {% endfor %}

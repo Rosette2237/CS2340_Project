@@ -13,11 +13,6 @@
                     <input type="text" name="skills" class="filter-custom-input" placeholder="e.g., Python, React" value="{{ values.skills }}">
                 </div>
 
-                <div class="filter-group">
-                    <label class="filter-label">Location</label>
-                    <input type="text" name="location" class="filter-custom-input" placeholder="City, State" value="{{ values.location }}">
-                </div>
-
                 <div class="search-button-wrapper">
                     <button type="submit" class="btn-save" style="width: 100%; height: 65px; font-size: 1.1rem;">Search</button>
                 </div>
@@ -42,9 +37,6 @@
                 </div>
 
                 <div class="mt-4 pt-4 border-top border-secondary">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span style="color: #ffffff; font-size: 0.85rem;">📍 {{ candidate.location|default:"No Location Provided" }}</span>
-                    </div>
                     <div style="margin-top: 10px;">
                         {% if candidate.linkedin_link %}
                             <a href="{{ candidate.linkedin_link }}" target="_blank" class="btn-save"

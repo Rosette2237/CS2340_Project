@@ -53,9 +53,14 @@ def job_list(request):
                 ),
             )
 
+    is_recruiter = False
+    if request.user.is_authenticated:
+        is_recruiter = getattr(getattr(request.user, 'profile', None), 'is_recruiter', False)
+
     context = {
         'jobs': jobs,
-        'values': request.GET
+        'values': request.GET,
+        'is_recruiter': is_recruiter,
     }
     return render(request, 'jobs/job_list.html', context)
 
@@ -85,7 +90,7 @@ def edit_job(request, job_id):
     if request.method == 'POST':
         form = JobForm(request.POST, instance=job)
         if form.is_valid():
-            job.save()
+            form.save()
             return redirect('jobs:index')
     else:
         form = JobForm(instance=job)
