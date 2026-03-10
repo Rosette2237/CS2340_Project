@@ -54,6 +54,9 @@ def signup(request):
         form = CustomUserCreationForm(request.POST, error_class=CustomErrorList)
         if form.is_valid():
             user = form.save()
+            profile, _ = Profile.objects.get_or_create(user=user)
+            profile.is_recruiter = form.cleaned_data.get('is_recruiter', False)
+            profile.save()
             auth_login(request, user)
             return redirect('profile.edit')
         else:
