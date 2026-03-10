@@ -343,6 +343,7 @@ nav {
     border: 1px solid #444 !important;
     color: #ffffff !important;
     width: 100%;
+    box-sizing: border-box;
     padding: 1.1rem !important;
     border-radius: 6px;
     margin-bottom: 2.5rem;
@@ -463,5 +464,36 @@ nav {
 .search-button-wrapper {
     margin-top: 40px;
     display: flex;
+}
+
+/* ── Recruiter map legend ─────────────────────────────── */
+.map-legend-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.map-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.map-legend-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+    opacity: 0.85;
+}
+
+.map-legend-label {
+    font-family: sans-serif;
+    font-size: 0.85rem;
+    color: #b0b0b0;
 }
 

@@ -34,7 +34,7 @@
                         <span style="color: #ffffff; font-weight: bold; font-size: 1.2rem;">${{ job.salary_min }} - ${{ job.salary_max }}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
-                        <span style="color: #00cfd5; font-size: 0.85rem;">{{ job.location }}</span>
+                        <span style="color: #00cfd5; font-size: 0.85rem;">{{ job.city }}{% if job.city and job.state %}, {% endif %}{{ job.state }}</span>
                         <span style="color: #888; font-size: 0.85rem;"> · Posted {{ job.posted_at|date:"M d" }}</span>
                     </div>
                     <div style="margin-top: 15px;">

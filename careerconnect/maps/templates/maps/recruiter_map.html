@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<div class="main-scroll-area">
+  <div class="map-page-wrapper">
+
+    <h1 class="page-title map-page-title">Recruiter Map</h1>
+
+    <div class="map-body">
+      <aside class="map-sidebar">
+
+        <!-- Legend -->
+        <div class="map-legend-section">
+          <div class="map-legend-item">
+            <span class="map-legend-dot" style="background:#2A81CB;"></span>
+            <span class="map-legend-label">Job Office Location</span>
+          </div>
+          <div class="map-legend-item">
+            <span class="map-legend-dot" style="background:#ff9800;"></span>
+            <span class="map-legend-label">Applicant Location</span>
+          </div>
+        </div>
+
+        <!-- Job list -->
+        <div class="map-filter-section">
+          <label class="filter-label">Your Job Postings</label>
+        </div>
+
+        <ul id="job-list" class="map-job-list">
+          {% for job in jobs %}
+          <li class="map-job-card" id="job-item-{{ job.id }}">
+            <div class="map-job-title">{{ job.title }}</div>
+            <div class="map-job-meta">{{ job.city }}{% if job.city and job.state %}, {% endif %}{{ job.state }}</div>
+            <div class="map-job-meta">{{ job.applicant_count }} applicant{{ job.applicant_count|pluralize }}</div>
+            {% if not job.has_location %}
+            <div style="color:#ff6b6b; font-size:0.78rem; font-family:sans-serif; margin-top:4px;">
+              No office location — <a href="{% url 'jobs:edit' job.id %}" style="color:#ff9800;">set location</a>
+            </div>
+            {% endif %}
+          </li>
+          {% empty %}
+          <li style="color:#b0b0b0; font-size:0.9rem; font-family:sans-serif; padding:12px 0;">
+            No jobs posted yet. <a href="{% url 'jobs:create' %}" style="color:#00cfd5;">Post your first job.</a>
+          </li>
+          {% endfor %}
+        </ul>
+
+      </aside>
+
+      <div class="map-panel">
+        <div id="map-box"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{{ job_locations|json_script:"job-locations-data" }}
+{{ applicant_locations|json_script:"applicant-locations-data" }}
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{% static 'maps/js/recruiter_map.js' %}"></script>
+{% endblock content %}
