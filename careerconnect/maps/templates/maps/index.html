@@ -6,33 +6,38 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <div class="main-scroll-area">
-  <div class="map-page">
-    <aside class="map-sidebar">
-      <div class="map-sidebar-header">
-        <h1 class="page-title map-title">Nearby Jobs</h1>
-        <p class="map-subtitle">Filter by distance from your current location.</p>
-      </div>
-      <div class="map-controls">
-        <label class="filter-label" for="distance-filter">Distance Range</label>
-        <select id="distance-filter" class="filter-custom-input map-select" style="appearance: auto;">
-          <option value="5">Within 5 miles</option>
-          <option value="10" selected>Within 10 miles</option>
-          <option value="25">Within 25 miles</option>
-          <option value="50">Within 50 miles</option>
-          <option value="100">Within 100 miles</option>
-          <option value="200">Within 200 miles</option>
-          <option value="any">Any distance</option>
-        </select>
-        <button id="use-location" class="btn-save map-button" type="button">Use My Location</button>
-        <p id="geo-status" class="map-status">Enable location to see nearby jobs.</p>
-      </div>
-      <ul id="job-list" class="map-job-list"></ul>
-      <div id="job-empty" class="map-empty">No jobs found within the selected distance.</div>
-    </aside>
+  <div class="map-page-wrapper">
 
-    <div class="map-panel">
-      <div id="map-box"></div>
+    <h1 class="page-title map-page-title">Nearby Jobs</h1>
+
+    <div class="map-body">
+      <aside class="map-sidebar">
+
+        <div class="map-filter-section">
+          <label class="filter-label" for="distance-filter">Distance Range</label>
+          <select id="distance-filter" class="filter-custom-input map-select-compact" style="appearance: auto;">
+            <option value="5">Within 5 miles</option>
+            <option value="10" selected>Within 10 miles</option>
+            <option value="25">Within 25 miles</option>
+            <option value="50">Within 50 miles</option>
+            <option value="100">Within 100 miles</option>
+            <option value="200">Within 200 miles</option>
+            <option value="any">Any distance</option>
+          </select>
+          <button id="use-location" class="btn-save map-button-compact" type="button">Use My Location</button>
+          <span id="geo-status" class="map-status">Enable location to see nearby jobs.</span>
+        </div>
+
+        <ul id="job-list" class="map-job-list"></ul>
+        <div id="job-empty" class="map-empty">No jobs found within the selected distance.</div>
+
+      </aside>
+
+      <div class="map-panel">
+        <div id="map-box"></div>
+      </div>
     </div>
+
   </div>
 </div>
 
