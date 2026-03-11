@@ -9,7 +9,7 @@
 
         <div class="filter-glass-card">
             <div class="mb-4">
-                <h2 style="font-family: 'Georgia', serif; font-size: 2rem; margin-bottom: 15px; color: #ffffff;">
+                <h2 style="font-family: 'Sora', serif; font-size: 2rem; margin-bottom: 15px; color: #ffffff;">
                     {{ application.job.title }}
                 </h2>
                 <p style="color: #ffffff; font-size: 1.1rem; margin-bottom: 10px;">
@@ -22,33 +22,23 @@
                         📍 {{ application.job.location }}
                     </span>
                     <span class="badge border border-secondary text-secondary" style="color: #ffffff; font-size: 0.75rem; letter-spacing: 1px;">
-                        {{ application.job.get_job_type_display|upper }}
+                        • {{ application.job.get_job_type_display|upper }}
                     </span>
                 </div>
             </div>
 
             <div class="border-top border-secondary pt-4 mt-4">
                 <h3 style="color: #ffffff; font-size: 1.3rem; margin-bottom: 15px;">Application Status</h3>
-                
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <h4 style="color: #00cfd5; font-size: 1rem; margin-bottom: 8px;">Current Status</h4>
+                        <h4 style="color: #888; font-size: 1rem; margin-bottom: 8px;">Current Status:</h4>
                         <p>
-                            {% if application.status == 'pending' %}
-                                <span class="badge bg-warning text-dark" style="color: #ffffff;font-size: 1rem; padding: 8px 16px;">⏳ Pending Review</span>
-                            {% elif application.status == 'reviewed' %}
-                                <span class="badge bg-info" style="color: #ffffff;font-size: 1rem; padding: 8px 16px;">👀 Under Review</span>
-                            {% elif application.status == 'accepted' %}
-                                <span class="badge bg-success" style="color: #ffffff;font-size: 1rem; padding: 8px 16px;">✅ Accepted</span>
-                            {% elif application.status == 'rejected' %}
-                                <span class="badge bg-danger" style="color: #ffffff;font-size: 1rem; padding: 8px 16px;">❌ Rejected</span>
-                            {% else %}
-                                <span class="badge bg-secondary" style="color: #ffffff;font-size: 1rem; padding: 8px 16px;">{{ application.status|title }}</span>
-                            {% endif %}
+                            <span class="badge bg-secondary" style="color: #ffffff;font-size: 1.1rem; padding: 8px 16px;">{{ application.get_status_display|title }}</span>
                         </p>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h4 style="color: #00cfd5; font-size: 1rem; margin-bottom: 8px;">Applied On</h4>
+                        <h4 style="color: #888; font-size: 1rem; margin-bottom: 8px;">Applied On:</h4>
                         <p style="color: #ffffff; font-size: 1.1rem;">
                             {{ application.applied_at|date:"F d, Y" }}
                         </p>
@@ -60,8 +50,8 @@
 
                 {% if application.tailored_note %}
                 <div class="mt-3">
-                    <h4 style="color: #00cfd5; font-size: 1rem; margin-bottom: 8px;">Your Note</h4>
-                    <div style="background-color: rgba(0, 207, 213, 0.1); border-left: 3px solid #00cfd5; padding: 15px; border-radius: 4px;">
+                    <h4 style="color: #888; font-size: 1rem; margin-bottom: 8px;">Your Note:</h4>
+                    <div style="background-color: #1a1d22; border: 1px solid #343a40; padding: 15px; border-radius: 6px;">
                         <p style="color: #ffffff; line-height: 1.6; margin: 0;">{{ application.tailored_note }}</p>
                     </div>
                 </div>
@@ -69,27 +59,27 @@
             </div>
 
             <div class="border-top border-secondary pt-4 mt-4">
-                <h3 style="color: #ffffff; font-size: 1.3rem; margin-bottom: 15px;">Job Details</h3>
-                
+                <h3 style="color: #ffffff; font-size: 1.3rem; margin-bottom: 15px;">Job Details:</h3>
+
                 <div class="mb-4">
-                    <h4 style="color: #00cfd5; font-size: 1rem; margin-bottom: 10px;">Description</h4>
+                    <h4 style="color: #888; font-size: 1rem; margin-bottom: 10px;">Description:</h4>
                     <p style="color: #ffffff; line-height: 1.8; white-space: pre-line;">{{ application.job.description }}</p>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6 mb-3">
-                        <h4 style="color: #00cfd5; font-size: 1rem; margin-bottom: 8px;">💰 Salary Range</h4>
+                        <h4 style="color: #888; font-size: 1rem; margin-bottom: 8px;">Salary Range:</h4>
                         <p style="color: #ffffff; font-weight: bold; font-size: 1.2rem;">
                             ${{ application.job.salary_min|floatformat:0|default:"N/A" }} - ${{ application.job.salary_max|floatformat:0|default:"N/A" }}
                         </p>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h4 style="color: #00cfd5; font-size: 1rem; margin-bottom: 8px;">🌍 Visa Sponsorship</h4>
+                        <h4 style="color: #888; font-size: 1rem; margin-bottom: 8px;">Visa Sponsorship:</h4>
                         <p style="color: #ffffff; font-size: 1.1rem;">
                             {% if application.job.visa_sponsorship %}
-                                <span class="badge bg-success" style="font-size: 0.9rem; padding: 6px 12px;">✓ Available</span>
+                                <span class="badge bg-success" style="font-size: 1.1rem; padding: 6px 12px;">Available</span>
                             {% else %}
-                                <span class="badge bg-secondary" style="font-size: 0.9rem; padding: 6px 12px;">Not Available</span>
+                                <span class="badge bg-secondary" style="font-size: 1.1rem; padding: 6px 12px;">Not Available</span>
                             {% endif %}
                         </p>
                     </div>
@@ -97,21 +87,21 @@
 
                 {% if application.job.skills_required %}
                 <div class="mb-3">
-                    <h4 style="color: #00cfd5; font-size: 1rem; margin-bottom: 10px;">🎯 Skills Required</h4>
+                    <h4 style="color: #888; font-size: 1rem; margin-bottom: 10px;">Skills Required:</h4>
                     <p style="color: #ffffff; line-height: 1.6;">{{ application.job.skills_required }}</p>
                 </div>
                 {% endif %}
             </div>
 
             <div class="border-top border-secondary pt-4 mt-4" style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <a href="{% url 'applications.index' %}" 
-                   class="btn-cancel" 
+                <a href="{% url 'applications.index' %}"
+                   class="btn-cancel"
                    style="display: inline-block; padding: 12px 24px; text-decoration: none; flex: 1; min-width: 200px; text-align: center;">
                     ← Back to My Applications
                 </a>
-                <a href="{% url 'jobs:index' %}" 
-                   class="btn-save" 
-                   style="display: inline-block; padding: 12px 24px; background-color: #00cfd5; color: #000000; text-decoration: none; border-radius: 4px; flex: 1; min-width: 200px; text-align: center;">
+                <a href="{% url 'jobs:index' %}"
+                   class="btn-save"
+                   style="display: inline-block; padding: 12px 24px; background-color: #888; color: #000000; text-decoration: none; border-radius: 4px; flex: 1; min-width: 200px; text-align: center;">
                     Browse More Jobs →
                 </a>
             </div>

@@ -33,9 +33,16 @@
                     </p>
                 </div>
 
-                <div class="mt-4 pt-4 border-top border-secondary">
+                <div class="mt-4 pt-4 border-top border-secondary" style="font-family: 'Sora', Serif">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <span style="color: #ffffff; font-weight: bold; font-size: 1.2rem;">${{ job.salary_min }} - ${{ job.salary_max }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        {% if job.visa_sponsorship %}
+                        <span style="color: #ffffff; font-weight: bold; font-size: 0.9rem;"> ·  VISA SPONSORED</span>
+                        {% else %}
+                        <span></span>
+                        {% endif %}
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <span style="color: #00cfd5; font-size: 0.85rem;">{{ job.city }}{% if job.city and job.state %}, {% endif %}{{ job.state }}</span>
