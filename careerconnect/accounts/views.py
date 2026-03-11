@@ -6,8 +6,8 @@ from .forms import CustomUserCreationForm, CustomErrorList, ProfileForm
 from jobs.models import Job
 from jobs.utils import calculate_match
 from .models import Profile, SavedSearch
-from accounts.signals import get_sys, profile_match
 from message.models import Conversation, Message
+from django.contrib.auth.models import User
 
 # Create your views here.
 @login_required
@@ -110,7 +110,9 @@ def search_candidates(request):
     if user_query:
         candidates = candidates.filter(user__username__icontains=user_query)
     if skills_query:
-        candidates = candidates.filter(skills__icontains=skills_query)
+        skills = [skill.strip() for skill in skills_query.split(",") if skill.strip()]
+        for skill in skills:
+            candidates = candidates.filter(skills__icontains=skill)
     if city_query:
         candidates = candidates.filter(city__icontains=city_query)
     if state_query:
@@ -119,7 +121,7 @@ def search_candidates(request):
     recruiter_jobs = Job.objects.filter(recruiter=request.user)
     candidates_list = list(candidates)
 
-    for candidate in candidates:
+    for candidate in candidates_list:
         candidate.recommendations = []
         if candidate.skills:
             for job in recruiter_jobs:
@@ -179,3 +181,42 @@ def applied_search(request, search_id):
         search.is_applicable = not search.is_applicable
         search.save()
         return redirect('my_searches')
+
+def get_sys():
+    user, _ = User.objects.get_or_create(
+        username="System",
+        defaults={
+            "email": "system@careerconnect.com",
+            "is_staff": False,
+            "is_superuser": False,
+            "is_active": True,
+        }
+    )
+
+    profile, _ = Profile.objects.get_or_create(
+        user=user,
+        defaults={
+            "is_recruiter": True,
+            "is_public": False,
+        }
+    )
+
+    return profile
+
+def profile_match(candidate, searches):
+    candidate_skills = [skill.strip().lower() for skill in (candidate.skills or "").split(",") if skill.strip()]
+    search_skills = [skill.strip().lower() for skill in (searches.skills or "").split(",") if skill.strip()]
+
+    if search_skills:
+        if not any(skill in candidate_skills for skill in search_skills):
+            return False;
+
+    if searches.city:
+        if (candidate.city or "").strip().lower() != searches.city.strip().lower():
+            return False
+
+    if searches.state:
+        if (candidate.state or "").strip().lower() != searches.state.strip().lower():
+            return False
+
+    return True
