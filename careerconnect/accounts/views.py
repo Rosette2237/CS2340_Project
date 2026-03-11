@@ -6,6 +6,8 @@ from .forms import CustomUserCreationForm, CustomErrorList, ProfileForm
 from jobs.models import Job
 from jobs.utils import calculate_match
 from .models import Profile, SavedSearch
+from accounts.signals import get_sys, profile_match
+from message.models import Conversation, Message
 
 # Create your views here.
 @login_required
@@ -25,6 +27,25 @@ def edit_profile(request):
                 profile.location_lat = None
                 profile.location_long = None
             profile.save()
+            if (not profile.is_recruiter) and profile.is_public and (not profile.notif_check):
+                system = get_sys()
+
+                for search in SavedSearch.objects.filter(is_applicable=True):
+                    recruiter_profile = search.recruiter.profile
+
+                if profile_match(profile, search):
+                    conversation, _ = Conversation.objects.get_or_create(
+                        recruiter = recruiter_profile,
+                        applicant = system
+                    )
+
+                    Message.objects.create(
+                        conversation=conversation,
+                        sender=system,
+                        body=f'Hello, new candidate match found: {profile.user.username}. '
+                    )
+
+                Profile.objects.filter(id=profile.id).update(notif_check=True)
             return redirect('profile.edit')
     else:
         form = ProfileForm(instance=profile)

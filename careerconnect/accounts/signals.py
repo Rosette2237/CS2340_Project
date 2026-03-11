@@ -1,13 +1,26 @@
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.db import transaction
-from .models import Profile, SavedSearch
-from message.models import Conversation, Message
+from .models import Profile
 from django.contrib.auth.models import User
 
 def get_sys():
-    user = User.objects.get(username="System")
-    return user.profile
+    user, _ = User.objects.get_or_create(
+        username="System",
+        defaults={
+            "email": "system@careerconnect.com",
+            "is_staff": False,
+            "is_superuser": False,
+            "is_active": True,
+        }
+    )
+
+    profile, _ = Profile.objects.get_or_create(
+        user=user,
+        defaults={
+            "is_recruiter": True,
+            "is_public": False,
+        }
+    )
+
+    return profile
 
 def profile_match(candidate, searches):
     candidate_skills = [skill.strip().lower() for skill in (candidate.skills or "").split(",") if skill.strip()]
@@ -26,34 +39,3 @@ def profile_match(candidate, searches):
             return False
 
     return True
-
-@receiver(post_save, sender=Profile)
-def notify_recruiter(sender, instance, created, **kwargs):
-    if instance.is_recruiter:
-        return
-
-    if not instance.is_public:
-        return
-
-    def send_notif():
-        system = get_sys()
-
-        for search in SavedSearch.objects.filter(is_applicable=True):
-            recruiter_profile = search.recruiter.profile
-
-            if profile_match(instance, search):
-                conversation, _ = Conversation.objects.get_or_create(
-                    recruiter = recruiter_profile,
-                    applicant = system
-                )
-
-                Message.objects.create(
-                    conversation=conversation,
-                    sender=system,
-                    body=f'Hello, new candidate match found: {instance.user.username}. '
-                )
-
-            Profile.objects.filter(id=instance.id).update(notif_check=True)
-
-    transaction.on_commit(send_notif)
-
