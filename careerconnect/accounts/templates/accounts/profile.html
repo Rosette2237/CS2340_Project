@@ -9,9 +9,9 @@
 
         <form method="POST">
             {% csrf_token %}
-            <label class="form-label">Address <span style="font-weight:400; text-transform:none; letter-spacing:0; color:#666; font-size:0.8rem;">(optional)</span></label>
+            <label class="form-label">Address (Optional)</label>
             <input type="text" name="address" class="custom-input"
-                   value="{{ profile.address }}" placeholder="e.g. 123 Main St">
+                   value="{{ profile.address }}" placeholder="e.g. 123 Main St.">
 
             <div style="display:flex; gap:20px;">
                 <div style="flex:2; min-width:0;">
@@ -44,25 +44,27 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <label class="form-label">LinkedIn URL</label>
+                    <label class="form-label">LinkedIn URL (Optional)</label>
                     <input type="url" name="linkedin_link" class="custom-input"
                     value="{{ profile.linkedin_link }}" placeholder="https://linkedin.com/in/your-username">
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Portfolio URL</label>
+                    <label class="form-label">Portfolio URL (Optional)</label>
                     <input type="url" name="portfolio_link" class="custom-input"
                     value="{{ profile.portfolio_link }}" placeholder="https://yourdomain.com or https://github.com/your-username">
                 </div>
             </div>
 
             <div class="checkbox-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 25px;">
-                <label for="is_public" class="form-label" style="margin: 0;">Public Profile:</label>
+                <label for="is_public" class="form-label" style="margin: 0;">Public Profile: </label>
                 <input type="checkbox" name="is_public" id="is_public" style="width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;"
                     {% if profile.is_public %}
                         checked
                     {% endif %}>
             </div>
-
+            <p style="margin-top: -15px; margin-bottom: 25px; font-size: 14px; color: #666;">
+                <em>*Note: Check = Visible. A public profile (visible) means that your profile is searchable and viewable by recruiters.</em>
+            </p>
             <div class="button-row">
                 <a href="/" class="btn-cancel">Cancel</a>
                 <button type="submit" class="btn-save">Save Changes</button>

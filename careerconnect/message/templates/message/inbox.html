@@ -6,7 +6,7 @@
 
 <div class="messaging-wrapper">
 
-    <div class="sidebar" id="sidebar">
+    <div class="sidebar" id="sidebar" style="margin-bottom: 50px">
         <div class="sidebar-header">
             <h2>Messages</h2>
             <p>{{ conversations|length }} conversation{{ conversations|length|pluralize }}</p>
@@ -63,7 +63,7 @@
         </div>
     </div>
 
-    <div class="chat-main">
+    <div class="chat-main" style="margin-bottom: 50px">
         {% if active_conv %}
             <div class="chat-header">
                 <div class="chat-header-avatar">{{ other_user.user.username|first|upper }}</div>

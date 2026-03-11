@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="main-scroll-area">
+    <div class="jobs-list-wrapper" style="width: 90%; max-width: 1200px; margin: 50px auto;">
+        <h1 class="page-title">My Saved Searches</h1>
+
+        {% if searches %}
+        <div class="jobs-grid">
+            {% for search in searches %}
+            <div class="job-portrait-card">
+                <div>
+                    <h2 style="font-family: 'Sora', serif; font-size: 1.8rem; margin-bottom: 15px;">Saved Search</h2>
+                    <p style="color: #888; font-size: 0.85rem;">CREATED</p>
+                    <p style="color: #b0b0b0; font-size: 0.95rem;">{{ search.creation_date|date:"M d, Y" }}</p>
+
+                    <p style="color: #888; font-size: 0.85rem; margin-top: 15px;">FIELDS</p>
+                    <p style="color: #b0b0b0; font-size: 0.95rem;">
+                        {% if search.skills %}Skills: {{ search.skills }}<br>{% endif %}
+                        {% if search.city %}City: {{ search.city }}<br>{% endif %}
+                        {% if search.state %}State: {{ search.state }}{% endif %}
+                    </p>
+                </div>
+
+                <div class="mt-4 pt-4 border-top border-secondary">
+                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                        <p style="color: #888; font-size: 0.85rem; margin-top: 15px;">NOTIFICATIONS:</p>
+                        <form method="POST" action="{% url 'applied_search' search.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-save" style="padding: 5px 15px; font-size: 0.9rem; width: 185px">
+                                {% if search.is_applicable %}Active{% else %}Inactive{% endif %}
+                            </button>
+                        </form>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
+                        <a href="{% url 'accounts.search' %}?skills={{ search.skills }}&city={{ search.city }}&state={{ search.state }}"
+                        class="btn-save"
+                        style="display: flex; align-items: center; justify-content: center; width: 220px; height: 25px; text-decoration: none;">
+                            Re-run Search
+                        </a>
+                        <form method="POST" action="{% url 'delete_search' search.id %}" style="margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-cancel" style="width: 310px; height: 54px;">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div style="width: 100%; display: flex; justify-content: center;">
+            <div class="col-12 py-5" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                <p style="color: #ffffff; font-size: 1.2rem; margin-bottom: 30px;">You haven't saved any searches yet.</p>
+                <a href="{% url 'accounts.search' %}" class="btn-save" style="display: flex; align-items: center; justify-content: center; width: 220px; height: 25px; text-decoration: none;">
+                    Search Candidates
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

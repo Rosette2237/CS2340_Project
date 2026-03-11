@@ -9,21 +9,38 @@
         <div class="filter-glass-card">
             <form method="GET" action=".">
                 <div class="filter-group">
+                    <label class="filter-label">Username</label>
+                    <input type="text" name="user" class="filter-custom-input" placeholder="Candidate Username" value="{{ values.user }}" style="margin-bottom: 30px">
                     <label class="filter-label">Skills</label>
-                    <input type="text" name="skills" class="filter-custom-input" placeholder="e.g., Python, React" value="{{ values.skills }}">
+                    <input type="text" name="skills" class="filter-custom-input" placeholder="e.g. Python, React" value="{{ values.skills }}">
                 </div>
                 <div style="display:flex; gap:20px;">
                     <div class="filter-group" style="flex:2; min-width:0;">
                         <label class="filter-label">City</label>
-                        <input type="text" name="city" class="filter-custom-input" placeholder="e.g., Atlanta" value="{{ values.city }}">
+                        <input type="text" name="city" class="filter-custom-input" placeholder="e.g. Atlanta" value="{{ values.city }}">
                     </div>
                     <div class="filter-group" style="flex:1; min-width:0;">
                         <label class="filter-label">State</label>
-                        <input type="text" name="state" class="filter-custom-input" placeholder="e.g., GA" value="{{ values.state }}">
+                        <input type="text" name="state" class="filter-custom-input" placeholder="e.g. GA" value="{{ values.state }}">
                     </div>
                 </div>
                 <div class="search-button-wrapper">
                     <button type="submit" class="btn-save" style="width:100%; height:65px; font-size:1.1rem;">Search</button>
+                </div>
+            </form>
+
+            <form method="POST" action="{% url 'save_search' %}" style="margin-top: 10px;">
+                {% csrf_token %}
+                <input type="hidden" name="skills" value="{{ values.skills }}">
+                <input type="hidden" name="city" value="{{ values.city }}">
+                <input type="hidden" name="state" value="{{ values.state }}">
+                <div class="save-button">
+                    <button type="submit" class="btn-save" style="width:100%; height:65px; font-size:1.1rem;"
+                        {% if not values.skills or not values.city or not values.state %}
+                            disabled
+                        {% endif %}>
+                            Save Search
+                    </button>
                 </div>
             </form>
         </div>
@@ -32,8 +49,19 @@
             {% for candidate in candidates %}
             <div class="job-portrait-card">
                 <div>
+                    {% if candidate.recommendations %}
+                    <div style="margin-bottom: 5px;">
+                        {% for rec in candidate.recommendations %}
+                        <div style="display: inline-block; margin-right: 8px; margin-bottom: 8px;">
+                                <span class="badge bg-info" style="font-size: 0.7rem; letter-spacing: 1px;">
+                                    RECOMMENDED ⭐ {{ rec.title }}
+                                </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                     <h2 style="font-family: 'Sora', serif; font-size: 1.8rem; margin-bottom: 5px;">{{ candidate.user.username }}</h2>
-                    <h4 style="color: #00cfd5; font-size: 1rem; margin-bottom: 15px;">{{ candidate.headline }}</h4>
+                    <h4 style="font-family: 'Sora', serif; font-size: 15px; margin-bottom: 15px;">{{ candidate.headline }}</h4>
                     <p style="color: #888; font-size: 0.85rem;">SKILLS</p>
                     <p style="color: #b0b0b0; font-size: 0.95rem; line-height: 1.6;">
                         {{ candidate.skills }}
@@ -56,7 +84,7 @@
                         Email {{ candidate.user.username }}
                     </a>
                 {% endif %}
-            
+
                 <div class="mt-4 pt-4 border-top border-secondary">
                     <div style="margin-top: 10px;">
                         {% if candidate.linkedin_link %}
@@ -66,7 +94,7 @@
                             </a>
                         {% endif %}
                         {% if candidate.portfolio_link %}
-                            <a href="{{ candidate.portfolio_link }}" target="_blank" class="btn-cancel"
+                            <a href="{{ candidate.portfolio_link }}" target="_blank" class="btn-save"
                                style="display:inline-block; padding:8px 12px; text-decoration:none; border-radius:4px;">
                                Portfolio
                             </a>
@@ -76,7 +104,7 @@
             </div>
             {% empty %}
             <div class="col-12 text-center py-5">
-                <p style="color: #ffffff; font-size: 1.2rem; margin-bottom: 30px;">No candidates found matching your criteria.</p>
+                <p style="color: #ffffff; font-size: 1.2rem; margin-bottom: 30px;">No candidates within orbit.</p>
                 <a href="." class="btn-cancel" style="display: inline-block;">Clear Filters</a>
             </div>
             {% endfor %}

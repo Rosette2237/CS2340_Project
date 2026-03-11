@@ -8,10 +8,12 @@
 
         <form method="POST">
             {% csrf_token %}
-            
+
             {% for field in form %}
                 <div style="margin-bottom: 20px;">
-                    <label class="form-label" style="font-size: 0.95rem;">{{ field.label }}</label>
+                    {% if field.name != 'visa_sponsorship' %}
+                        <label class="form-label" style="font-size: 0.95rem;">{{ field.label }}</label>
+                    {% endif %}
 
                     {% if field.name == 'description' %}
                         <textarea name="{{ field.name }}" class="custom-input" rows="5" style="font-size: 0.95rem;">{{ field.value|default_if_none:"" }}</textarea>
@@ -22,8 +24,13 @@
                             {% endfor %}
                         </select>
                     {% elif field.name == 'visa_sponsorship' %}
-                        <div style="margin-top: 6px;">
-                            <input type="checkbox" name="{{ field.name }}" {% if field.value %}checked{% endif %} style="width: 16px; height: 16px; cursor: pointer;">
+                        <div class="checkbox-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 25px;">
+                            <label class="form-label" style="margin: 0; font-size: 0.95rem;">
+                                {{ field.label }}
+                            </label>
+                            <input type="checkbox" name="{{ field.name }}" style="width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;"
+                                {% if field.value %}checked{% endif %}
+                            >
                         </div>
                     {% else %}
                         <input type="text" name="{{ field.name }}" class="custom-input" value="{{ field.value|default_if_none:"" }}" style="font-size: 0.95rem;">
@@ -41,7 +48,7 @@
             {% endfor %}
 
             <div class="button-row">
-                <a href="{% url 'jobs:index' %}" class="btn-cancel">Cancel</a>
+                <a href="{% url 'jobs:recruiter_jobs' %}" class="btn-cancel">Cancel</a>
                 <button type="submit" class="btn-save">Save Job</button>
             </div>
         </form>

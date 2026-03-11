@@ -66,6 +66,16 @@ nav {
     background-color: #1c2e4a;
 }
 
+.nav-divider {
+    width: 1px;
+    min-width: 1px;
+    height: 25px;
+    align-self: stretch;
+    background-color: rgb(216, 208, 208);
+    margin: 0 12px;
+    flex-shrink: 0;
+}
+
 .logo {
     color: #e8eef9;
     font-size: 24px;
@@ -317,7 +327,7 @@ nav {
         map-body {
         flex-direction: column;
         }
-    }   
+    }
 
     .map-sidebar {
         width: 100%;
