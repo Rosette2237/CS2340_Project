@@ -33,10 +33,6 @@
                     {% endif %}
                     <li><a href="{% url 'inbox' %}">Inbox</a></li>
                     <div class="nav-divider d-none d-lg-block"></div>
-                    {% if user.is_staff %}
-                        <li><a href="{% url 'reports.dashboard' %}">Reports</a></li>
-                        <div class="nav-divider d-none d-lg-block"></div>
-                    {% endif %}
                     <li><a href="{% url 'accounts.logout' %}">Logout ({{ user.username }})</a></li>
 
 
