@@ -1,5 +1,3 @@
-# careerconnect/middleware.py
-
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models import F
@@ -8,10 +6,6 @@ SESSION_TIMEOUT_MINUTES = 30
 
 
 class UserActivityMiddleware:
-    """
-    Tracks how long each authenticated user spends on the site.
-    """
-
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -31,7 +25,7 @@ class UserActivityMiddleware:
 
             if profile.last_activity:
                 delta = now - profile.last_activity
-                # Only accumulate time within an active session window
+
                 if delta < timedelta(minutes=SESSION_TIMEOUT_MINUTES):
                     Profile.objects.filter(pk=profile.pk).update(
                         total_time_on_site=F('total_time_on_site') + delta.total_seconds(),

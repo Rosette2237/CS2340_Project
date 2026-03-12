@@ -18,7 +18,6 @@ class Profile(models.Model):
     location_long = models.DecimalField(decimal_places=6, max_digits=9, null=True, blank=True)
     notif_check = models.BooleanField(default=False)
 
-    # ── New activity-tracking fields ──────────────────────────────
     last_activity = models.DateTimeField(null=True, blank=True)
     total_time_on_site = models.FloatField(
         default=0.0,
