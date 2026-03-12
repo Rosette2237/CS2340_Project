@@ -10,13 +10,8 @@
         <div class="filter-glass-card">
             <div class="mb-4 pb-4 border-bottom border-secondary">
                 <h2 style="font-family: 'Sora', serif; font-size: 1.8rem; margin-bottom: 10px; color: #ffffff;">
-                    {{ job.title }}
+                    {{ job.title }} • {{ job.company_name }}
                 </h2>
-                <p style="color: #ffffff; font-size: 1rem; margin-bottom: 8px;">
-                    {% if job.company %}
-                        at <strong>{{ job.company }}</strong>
-                    {% endif %}
-                </p>
                 <p style="color: #00cfd5; font-size: 0.95rem;">
                     📍 {{ job.location }} • {{ job.get_job_type_display }}
                 </p>

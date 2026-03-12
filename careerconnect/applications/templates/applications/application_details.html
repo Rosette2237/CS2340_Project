@@ -12,9 +12,9 @@
                 <h2 style="font-family: 'Sora', serif; font-size: 2rem; margin-bottom: 15px; color: #ffffff;">
                     {{ application.job.title }}
                 </h2>
-                <p style="color: #ffffff; font-size: 1.1rem; margin-bottom: 10px;">
-                    {% if application.job.company %}
-                        at <strong style="color: #ffffff;">{{ application.job.company }}</strong>
+                <p style="color: #ffffff; font-size: 1.2rem; margin-bottom: 10px;">
+                    {% if application.job.company_name %}
+                        <strong style="color: #ffffff;">{{ application.job.company_name }} </strong>
                     {% endif %}
                 </p>
                 <div style="margin-top: 15px;">
