@@ -35,15 +35,13 @@
                     <div class="nav-divider d-none d-lg-block"></div>
                     <li><a href="{% url 'accounts.logout' %}">Logout ({{ user.username }})</a></li>
 
-
-
                 {% else %}
                 <li><a href="{% url 'maps.index' %}">View Map</a></li>
                 <div class="nav-divider d-none d-lg-block"></div>
                 <li><a href="{% url 'accounts.login' %}">Login</a></li>
                 <li><a href="{% url 'accounts.signup' %}">Sign Up</a></li>
                 {% endif %}
-                    <!--<div class="vr white mx-2 d-none d-lg-block"></div>-->
+                <!--<div class="vr white mx-2 d-none d-lg-block"></div>-->
 
             </ul>
         </nav>

@@ -43,7 +43,7 @@ def edit_profile(request):
                         Message.objects.create(
                             conversation=conversation,
                             sender=system,
-                            body=f'Hello, new candidate match found: {profile.display_name}. '
+                            body=f'Hello, new candidate match found: {profile.display_name} @ {profile.user.username}'
                         )
 
                 Profile.objects.filter(id=profile.id).update(notif_check=True)
