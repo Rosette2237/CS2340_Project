@@ -101,7 +101,7 @@ def edit_job(request, job_id):
             job.location_lat = lat
             job.location_long = lng
             job.save()
-            return redirect('jobs:index')
+            return redirect('jobs:recruiter_jobs')
     else:
         form = JobForm(instance=job)
     return render(request, 'jobs/job_form.html', {'form': form})
@@ -127,3 +127,16 @@ def recruiter_jobs(request):
     jobs = Job.objects.filter(recruiter=request.user).order_by('-posted_at')
 
     return render(request, 'jobs/recruiter_jobs.html', {'jobs': jobs})
+
+@login_required
+def delete_job(request, job_id):
+    job = get_object_or_404(Job, id=job_id)
+
+    if request.user != job.recruiter:
+        return HttpResponseForbidden("You can only delete your own job postings.")
+
+    if request.method == 'POST':
+        job.delete()
+        return redirect('jobs:recruiter_jobs') 
+
+    return redirect('jobs:recruiter_jobs')

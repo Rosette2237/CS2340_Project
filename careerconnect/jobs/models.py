@@ -9,6 +9,7 @@ class Job(models.Model):
     ]
 
     recruiter = models.ForeignKey(User, on_delete=models.CASCADE)
+    company_name = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
     description = models.TextField()
     address = models.CharField(max_length=300, blank=True)

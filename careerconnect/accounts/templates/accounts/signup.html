@@ -10,19 +10,57 @@
             {% csrf_token %}
 
             {% for field in template_data.form %}
-                <div class="mb-4">
-                    <label class="form-label">{{ field.label }}</label>
-                    {{ field }}
+                
+                {% if field.name == 'first_name' %}
+                    <div style="display: flex; gap: 20px;">
+                        <div style="flex: 1; min-width: 0;">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger" style="color: #ff4d4d; font-size: 0.85rem; margin-top: -25px; margin-bottom: 15px; font-weight: bold;">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
 
-                    {% if field.errors %}
-                        {% for error in field.errors %}
-                            <div class="alert alert-danger" style="color: #ff4d4d; font-size: 0.85rem; margin-top: 5px; font-weight: bold;">
-                                {{ error }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
+                {% elif field.name == 'last_name' %}
+                        <div style="flex: 1; min-width: 0;">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger" style="color: #ff4d4d; font-size: 0.85rem; margin-top: -25px; margin-bottom: 15px; font-weight: bold;">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div> {% elif field.name == 'is_recruiter' %}
+                    {% else %}
+                    <div class="mb-4">
+                        <label class="form-label">{{ field.label }}</label>
+                        {{ field }}
+
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger" style="color: #ff4d4d; font-size: 0.85rem; margin-top: -25px; margin-bottom: 15px; font-weight: bold;">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+
             {% endfor %}
+
+            <div class="checkbox-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 25px;">
+                <label class="form-label" style="margin: 0;">{{ template_data.form.is_recruiter.label }}</label>
+                {{ template_data.form.is_recruiter }}
+            </div>
 
             <div class="button-row" style="margin-top: 30px;">
                 <button type="submit" class="btn-save" style="width: 100%;">Create Account</button>

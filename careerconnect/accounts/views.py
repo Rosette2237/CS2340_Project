@@ -8,6 +8,7 @@ from jobs.utils import calculate_match
 from .models import Profile, SavedSearch
 from message.models import Conversation, Message
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 # Create your views here.
 @login_required
@@ -42,7 +43,7 @@ def edit_profile(request):
                     Message.objects.create(
                         conversation=conversation,
                         sender=system,
-                        body=f'Hello, new candidate match found: {profile.user.username}. '
+                        body=f'Hello, new candidate match found: {profile.display_name}. '
                     )
 
                 Profile.objects.filter(id=profile.id).update(notif_check=True)
@@ -89,6 +90,8 @@ def signup(request):
             profile.is_recruiter = form.cleaned_data.get('is_recruiter', False)
             profile.save()
             auth_login(request, user)
+            if profile.is_recruiter:
+                return redirect('jobs:create')
             return redirect('profile.edit')
         else:
             template_data['form'] = form
@@ -108,7 +111,11 @@ def search_candidates(request):
     state_query = request.GET.get('state')
 
     if user_query:
-        candidates = candidates.filter(user__username__icontains=user_query)
+        candidates = candidates.filter(
+            Q(user__username__icontains=user_query)
+            | Q(user__first_name__icontains=user_query)
+            | Q(user__last_name__icontains=user_query)
+        )
     if skills_query:
         skills = [skill.strip() for skill in skills_query.split(",") if skill.strip()]
         for skill in skills:
