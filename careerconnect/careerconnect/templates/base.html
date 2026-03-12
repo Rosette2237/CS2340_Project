@@ -23,6 +23,7 @@
                         <li><a href="{% url 'accounts.search' %}">Find Candidates</a></li>
                         <li><a href="{% url 'my_searches' %}">My Searches</a></li>
                         <li><a href="{% url 'jobs:recruiter_jobs' %}">My Jobs</a></li>
+                        <li><a href="{% url 'applications.kanban' %}">Pipeline</a></li>
                         <div class="nav-divider d-none d-lg-block"></div>
                     {% else %}
                         <li><a href="{% url 'maps.index' %}">View Map</a></li>
@@ -32,7 +33,13 @@
                     {% endif %}
                     <li><a href="{% url 'inbox' %}">Inbox</a></li>
                     <div class="nav-divider d-none d-lg-block"></div>
+                    {% if user.is_staff %}                                               <!-- ✨ NEW -->
+                        <li><a href="{% url 'reports.dashboard' %}">Reports</a></li>    <!-- ✨ NEW -->
+                        <div class="nav-divider d-none d-lg-block"></div>               <!-- ✨ NEW -->
+                    {% endif %}                                                          <!-- ✨ NEW -->
                     <li><a href="{% url 'accounts.logout' %}">Logout ({{ user.username }})</a></li>
+
+
 
                 {% else %}
                 <li><a href="{% url 'maps.index' %}">View Map</a></li>
