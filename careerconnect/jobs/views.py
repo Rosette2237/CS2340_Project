@@ -107,19 +107,6 @@ def edit_job(request, job_id):
     return render(request, 'jobs/job_form.html', {'form': form})
 
 @login_required
-def delete_job(request, job_id):
-    job = get_object_or_404(Job, id=job_id)
-
-    if request.user != job.recruiter:
-        return HttpResponseForbidden("You can only delete your own job postings.")
-
-    if request.method == 'POST':
-        job.delete()
-        return redirect('jobs:index')
-
-    return render(request, 'jobs/delete_job.html', {'job': job})
-
-@login_required
 def recruiter_jobs(request):
     if not getattr(request.user.profile, 'is_recruiter', False):
         return HttpResponseForbidden("Only recruiters can view this page.")
