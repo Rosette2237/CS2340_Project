@@ -119,7 +119,7 @@ def search_candidates(request):
     if skills_query:
         skills = [skill.strip() for skill in skills_query.split(",") if skill.strip()]
         for skill in skills:
-            candidates = candidates.filter(skills__icontains=skill)
+            candidates = candidates.filter(Q(skills__icontains=skill) | Q(work_experience=skill))
     if city_query:
         candidates = candidates.filter(city__icontains=city_query)
     if state_query:
