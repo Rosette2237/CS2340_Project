@@ -50,6 +50,9 @@
             <div class="button-row">
                 <a href="{% url 'jobs:recruiter_jobs' %}" class="btn-cancel">Cancel</a>
                 <button type="submit" class="btn-save" style="height: 44px">Save Job</button>
+               {% if form.instance.pk %}
+                  <a href="{% url 'jobs:delete' form.instance.pk %}" class="btn-danger">Delete</a>
+               {% endif %}
             </div>
         </form>
     </div>

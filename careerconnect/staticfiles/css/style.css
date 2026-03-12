@@ -453,6 +453,16 @@ nav {
     text-decoration: none !important;
     transition: 0.3s;
 }
+.btn-danger {
+    background-color: transparent !important;
+    color: red !important;
+    font-family: sans-serif !important;
+    padding: 13px 45px !important;
+    border: 1px solid white !important;
+    border-radius: 4px !important;
+    text-decoration: none !important;
+    transition: 0.3s;
+}
 
 #starCanvas {
     position: fixed;

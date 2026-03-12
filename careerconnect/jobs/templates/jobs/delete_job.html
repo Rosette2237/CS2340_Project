@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="main-scroll-area">
+    <div class="profile-card">
+        <h1 class="page-title">Delete Job</h1>
+
+        <p style="color: rgba(255,255,255,0.6); font-family: 'Sora', sans-serif; font-size: 0.95rem; margin-bottom: 8px;">
+            Are you sure you want to delete:
+        </p>
+        <p style="color: #f0f0f8; font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 6px;">
+            "{{ job.title }}"
+        </p>
+        <p style="color: #ff6b6b; font-family: 'Sora', sans-serif; font-size: 0.85rem; margin-bottom: 32px;">
+            This cannot be undone.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="button-row">
+                <a href="{% url 'jobs:recruiter_jobs' %}" class="btn-cancel">Cancel</a>
+                <button type="submit" class="btn-save" style="height: 44px; background: #ff4d4d;">
+                    Yes, delete it
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
