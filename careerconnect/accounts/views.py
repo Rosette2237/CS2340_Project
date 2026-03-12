@@ -34,17 +34,17 @@ def edit_profile(request):
                 for search in SavedSearch.objects.filter(is_applicable=True):
                     recruiter_profile = search.recruiter.profile
 
-                if profile_match(profile, search):
-                    conversation, _ = Conversation.objects.get_or_create(
-                        recruiter = recruiter_profile,
-                        applicant = system
-                    )
+                    if profile_match(profile, search):
+                        conversation, _ = Conversation.objects.get_or_create(
+                            recruiter = recruiter_profile,
+                            applicant = system
+                        )
 
-                    Message.objects.create(
-                        conversation=conversation,
-                        sender=system,
-                        body=f'Hello, new candidate match found: {profile.display_name}. '
-                    )
+                        Message.objects.create(
+                            conversation=conversation,
+                            sender=system,
+                            body=f'Hello, new candidate match found: {profile.display_name}. '
+                        )
 
                 Profile.objects.filter(id=profile.id).update(notif_check=True)
             return redirect('profile.edit')

@@ -4,7 +4,7 @@ from django.contrib import messages
 from .models import Application
 from jobs.models import Job
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.views.decorators.http import require_POST
 
 
@@ -21,23 +21,23 @@ def application_detail(request, pk):
 @login_required
 def apply_to_job(request, job_id):
     job = get_object_or_404(Job, pk=job_id)
-    
+
     if Application.objects.filter(user=request.user, job=job).exists():
         messages.info(request, 'You have already applied to this job.')
         return redirect('applications.index')
-    
+
     if request.method == 'POST':
         tailored_note = request.POST.get('tailored_note', '').strip()
-        
+
         application = Application.objects.create(
             user=request.user,
             job=job,
             tailored_note=tailored_note if tailored_note else "Happy to apply for this position!"
         )
-        
+
         messages.success(request, f'Successfully applied to {job.title}!')
         return redirect('applications.index')
-    
+
     return render(request, 'applications/apply_form.html', {'job': job})
 
 @login_required
