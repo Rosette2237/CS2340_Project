@@ -29,7 +29,7 @@
                 </div>
             </form>
 
-            {% if values.skills or values.city or values.state %}
+            {% if values.skills and values.city and values.state %}
             <form method="POST" action="{% url 'save_search' %}" style="margin-top: 10px;">
                 {% csrf_token %}
                 <input type="hidden" name="skills" value="{{ values.skills }}">
