@@ -1,3 +1,5 @@
+# accounts/admin.py
+
 import csv
 from django.http import HttpResponse
 from django.contrib import admin
@@ -13,6 +15,8 @@ def export_profiles_csv(modeladmin, request, queryset):
         'User ID', 'Username', 'Email', 'Role',
         'City', 'State', 'Skills', 'Headline',
         'Public Profile', 'Date Joined',
+        'Total Time On Site (seconds)', 'Total Time On Site (formatted)',  
+        'Last Activity',                                                   
     ])
     for profile in queryset.select_related('user'):
         writer.writerow([
@@ -26,16 +30,20 @@ def export_profiles_csv(modeladmin, request, queryset):
             profile.headline,
             'Yes' if profile.is_public else 'No',
             profile.user.date_joined.strftime('%Y-%m-%d'),
+            round(profile.total_time_on_site),                          
+            profile.formatted_time_on_site,                              
+            profile.last_activity.strftime('%Y-%m-%d %H:%M') if profile.last_activity else 'Never', 
         ])
     return response
+
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     actions       = [export_profiles_csv]
-    list_display  = ['user', 'is_recruiter', 'city', 'state', 'is_public']
+    list_display  = ['user', 'is_recruiter', 'city', 'state', 'is_public',
+                     'formatted_time_on_site', 'last_activity']            
     list_filter   = ['is_recruiter', 'is_public']
     search_fields = ['user__username', 'skills', 'city']
-
 
 
 @admin.action(description="Export selected saved searches as CSV")
@@ -60,6 +68,7 @@ def export_saved_searches_csv(modeladmin, request, queryset):
             s.creation_date.strftime('%Y-%m-%d %H:%M'),
         ])
     return response
+
 
 @admin.register(SavedSearch)
 class SavedSearchAdmin(admin.ModelAdmin):

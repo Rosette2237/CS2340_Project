@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete = models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_recruiter = models.BooleanField(default=False, help_text="Check this box if you are a recruiter")
     headline = models.CharField(max_length=200, blank=True)
     skills = models.TextField(help_text="Comma separated list of skills", blank=True)
@@ -18,6 +17,13 @@ class Profile(models.Model):
     location_lat = models.DecimalField(decimal_places=6, max_digits=9, null=True, blank=True)
     location_long = models.DecimalField(decimal_places=6, max_digits=9, null=True, blank=True)
     notif_check = models.BooleanField(default=False)
+
+    # ── New activity-tracking fields ──────────────────────────────
+    last_activity = models.DateTimeField(null=True, blank=True)
+    total_time_on_site = models.FloatField(
+        default=0.0,
+        help_text="Accumulated seconds the user has spent on the site"
+    )
 
     @property
     def display_name(self):
@@ -34,8 +40,21 @@ class Profile(models.Model):
             return (parts[0][0] + parts[-1][0]).upper()
         return (self.user.username[:1] or '?').upper()
 
+    @property
+    def formatted_time_on_site(self):
+        """Returns total_time_on_site as a human-readable string (e.g. '3h 22m')."""
+        total_seconds = int(self.total_time_on_site)
+        hours, remainder = divmod(total_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if hours:
+            return f"{hours}h {minutes}m"
+        if minutes:
+            return f"{minutes}m {seconds}s"
+        return f"{seconds}s"
+
     def __str__(self):
         return f"{self.user.username}'s Profile"
+
 
 class SavedSearch(models.Model):
     recruiter = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -50,5 +69,4 @@ class SavedSearch(models.Model):
 
     class Meta:
         verbose_name = 'Saved Search'
-        verbose_name_plural = 'Saved Seaches'
-
+        verbose_name_plural = 'Saved Searches'
