@@ -9,14 +9,9 @@
 
         <div class="filter-glass-card">
             <div class="mb-4 pb-4 border-bottom border-secondary">
-                <h2 style="font-family: 'Georgia', serif; font-size: 1.8rem; margin-bottom: 10px; color: #ffffff;">
-                    {{ job.title }}
+                <h2 style="font-family: 'Sora', serif; font-size: 1.8rem; margin-bottom: 10px; color: #ffffff;">
+                    {{ job.title }} • {{ job.company_name }}
                 </h2>
-                <p style="color: #ffffff; font-size: 1rem; margin-bottom: 8px;">
-                    {% if job.company %}
-                        at <strong>{{ job.company }}</strong>
-                    {% endif %}
-                </p>
                 <p style="color: #00cfd5; font-size: 0.95rem;">
                     📍 {{ job.location }} • {{ job.get_job_type_display }}
                 </p>
@@ -24,17 +19,17 @@
 
             <form method="POST" action="">
                 {% csrf_token %}
-                
+
                 <div class="mb-4">
                     <label for="tailored_note" class="filter-label" style="color: #ffffff; font-size: 1.1rem; margin-bottom: 10px; display: block;">
                         Quick Note (Optional)
                     </label>
-                    <textarea 
-                        name="tailored_note" 
-                        id="tailored_note" 
-                        rows="3" 
+                    <textarea
+                        name="tailored_note"
+                        id="tailored_note"
+                        rows="3"
                         maxlength="250"
-                        class="filter-custom-input" 
+                        class="filter-custom-input"
                         placeholder="Why are you interested in this role?"
                         style="width: 100%; padding: 15px; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #ffffff; font-size: 1rem; line-height: 1.6; resize: vertical;"
                     ></textarea>
@@ -44,13 +39,13 @@
                 </div>
 
                 <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 30px;">
-                    <a href="{% url 'jobs.index' %}" 
-                       class="btn-cancel" 
+                    <a href="{% url 'jobs:index' %}"
+                       class="btn-cancel"
                        style="display: inline-block; padding: 12px 24px; text-decoration: none; flex: 1; text-align: center; min-width: 150px;">
                         Cancel
                     </a>
-                    <button type="submit" 
-                            class="btn-save" 
+                    <button type="submit"
+                            class="btn-save"
                             style="display: inline-block; padding: 12px 24px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; flex: 2; text-align: center; font-size: 1rem; min-width: 200px;">
                         Submit Application
                     </button>

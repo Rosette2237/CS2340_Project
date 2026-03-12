@@ -14,25 +14,46 @@
                 <img src="{% static 'img/CCLogo.png' %}" alt="CareerConnect" height="225" />
             </a>
             <ul class="nav-links">
-                <li><a href="{% url 'jobs.index' %}">Explore Jobs</a></li>
-                <li><a href="{% url 'maps.index' %}">View Map</a></li>
-                <div class="vr white mx-2 d-none d-lg-block"></div>
+                <li><a href="{% url 'jobs:index' %}">Explore Jobs</a></li>
 
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'applications.index' %}">My Applications</a></li>
-                <li><a href="{% url 'profile.edit' %}">My Profile</a></li>
-                <li><a href="{% url 'accounts.logout' %}">Logout ({{ user.username }})</a></li>
+
+                    {% if user.profile.is_recruiter %}
+                        <li><a href="{% url 'maps.recruiter' %}">View Map</a></li>
+                        <li><a href="{% url 'accounts.search' %}">Find Candidates</a></li>
+                        <li><a href="{% url 'applications.kanban' %}">Sort Candidates</a></li>
+                        <li><a href="{% url 'my_searches' %}">My Searches</a></li>
+                        <li><a href="{% url 'jobs:recruiter_jobs' %}">My Jobs</a></li>
+                        <div class="nav-divider d-none d-lg-block"></div>
+                    {% else %}
+                        <li><a href="{% url 'maps.index' %}">View Map</a></li>
+                        <li><a href="{% url 'applications.index' %}">My Applications</a></li>
+                        <li><a href="{% url 'profile.edit' %}">My Profile</a></li>
+                        <div class="nav-divider d-none d-lg-block"></div>
+                    {% endif %}
+                    <li><a href="{% url 'inbox' %}">Inbox</a></li>
+                    <div class="nav-divider d-none d-lg-block"></div>
+                    <li><a href="{% url 'accounts.logout' %}">Logout ({{ user.username }})</a></li>
 
                 {% else %}
+                <li><a href="{% url 'maps.index' %}">View Map</a></li>
+                <div class="nav-divider d-none d-lg-block"></div>
                 <li><a href="{% url 'accounts.login' %}">Login</a></li>
                 <li><a href="{% url 'accounts.signup' %}">Sign Up</a></li>
                 {% endif %}
+                <!--<div class="vr white mx-2 d-none d-lg-block"></div>-->
 
             </ul>
         </nav>
 
         {% block content %}
         {% endblock content %}
+
+        <footer class="thin-footer">
+            <div class="thin-footer-inner">
+                <span>© Designed by Muñoz3</span>
+             </div>
+        </footer>
 
         <canvas id="starCanvas"></canvas>
 
@@ -97,5 +118,6 @@
             init();
             animate();
         </script>
+
     </body>
     </html>

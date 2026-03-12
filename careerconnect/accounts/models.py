@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete = models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_recruiter = models.BooleanField(default=False, help_text="Check this box if you are a recruiter")
     headline = models.CharField(max_length=200, blank=True)
     skills = models.TextField(help_text="Comma separated list of skills", blank=True)
     education = models.TextField(help_text="Details about your education", blank=True)
@@ -11,6 +11,61 @@ class Profile(models.Model):
     linkedin_link = models.URLField(blank=True)
     portfolio_link = models.URLField(blank=True)
     is_public = models.BooleanField(default=True)
+    address = models.CharField(max_length=300, blank=True, help_text="Street address (optional)")
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    location_lat = models.DecimalField(decimal_places=6, max_digits=9, null=True, blank=True)
+    location_long = models.DecimalField(decimal_places=6, max_digits=9, null=True, blank=True)
+    notif_check = models.BooleanField(default=False)
+
+    last_activity = models.DateTimeField(null=True, blank=True)
+    total_time_on_site = models.FloatField(
+        default=0.0,
+        help_text="Accumulated seconds the user has spent on the site"
+    )
+
+    @property
+    def display_name(self):
+        full_name = self.user.get_full_name().strip()
+        return full_name or self.user.username
+
+    @property
+    def initials(self):
+        full_name = self.user.get_full_name().strip()
+        if full_name:
+            parts = [part for part in full_name.split() if part]
+            if len(parts) == 1:
+                return parts[0][0].upper()
+            return (parts[0][0] + parts[-1][0]).upper()
+        return (self.user.username[:1] or '?').upper()
+
+    @property
+    def formatted_time_on_site(self):
+        """Returns total_time_on_site as a human-readable string (e.g. '3h 22m')."""
+        total_seconds = int(self.total_time_on_site)
+        hours, remainder = divmod(total_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if hours:
+            return f"{hours}h {minutes}m"
+        if minutes:
+            return f"{minutes}m {seconds}s"
+        return f"{seconds}s"
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
+
+
+class SavedSearch(models.Model):
+    recruiter = models.ForeignKey(User, on_delete=models.CASCADE)
+    skills = models.CharField(max_length=500, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    is_applicable = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'Saved Search {self.id} by {self.recruiter} at {self.creation_date:%Y-%m-%d %H:%M}'
+
+    class Meta:
+        verbose_name = 'Saved Search'
+        verbose_name_plural = 'Saved Searches'

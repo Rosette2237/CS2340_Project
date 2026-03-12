@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="main-scroll-area">
+    <div class="profile-card">
+        <h1 class="page-title">{% if form.instance.id %}Edit Job{% else %}Post a New Job{% endif %}</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div style="margin-bottom: 20px;">
+                    {% if field.name != 'visa_sponsorship' %}
+                        <label class="form-label" style="font-size: 0.95rem;">{{ field.label }}</label>
+                    {% endif %}
+
+                    {% if field.name == 'description' %}
+                        <textarea name="{{ field.name }}" class="custom-input" rows="5" style="font-size: 0.95rem;">{{ field.value|default_if_none:"" }}</textarea>
+                    {% elif field.name == 'job_type' %}
+                        <select name="{{ field.name }}" class="custom-input" style="appearance: auto; font-size: 0.95rem;">
+                            {% for val, label in field.field.choices %}
+                                <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    {% elif field.name == 'visa_sponsorship' %}
+                        <div class="checkbox-row" style="display: flex; align-items: center; gap: 10px; margin-bottom: 25px;">
+                            <label class="form-label" style="margin: 0; font-size: 0.95rem;">
+                                {{ field.label }}
+                            </label>
+                            <input type="checkbox" name="{{ field.name }}" style="width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;"
+                                {% if field.value %}checked{% endif %}
+                            >
+                        </div>
+                    {% else %}
+                        <input type="text" name="{{ field.name }}" class="custom-input" value="{{ field.value|default_if_none:"" }}" style="font-size: 0.95rem;">
+                    {% endif %}
+
+                    {% if field.help_text %}
+                        <small style="color: #888; font-size: 0.85rem;">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <small style="color: #ff6b6b; font-size: 0.85rem; display: block; margin-top: 4px;">{{ error }}</small>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="button-row">
+                <a href="{% url 'jobs:recruiter_jobs' %}" class="btn-cancel">Cancel</a>
+                <button type="submit" class="btn-save" style="height: 44px">Save Job</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
