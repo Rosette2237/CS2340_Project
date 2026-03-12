@@ -9,8 +9,8 @@
         <div class="filter-glass-card">
             <form method="GET" action=".">
                 <div class="filter-group">
-                    <label class="filter-label">Username</label>
-                    <input type="text" name="user" class="filter-custom-input" placeholder="Candidate Username" value="{{ values.user }}" style="margin-bottom: 30px">
+                    <label class="filter-label">Name or Username</label>
+                    <input type="text" name="user" class="filter-custom-input" placeholder="Candidate name or username" value="{{ values.user }}" style="margin-bottom: 30px">
                     <label class="filter-label">Skills</label>
                     <input type="text" name="skills" class="filter-custom-input" placeholder="e.g. Python, React" value="{{ values.skills }}">
                 </div>
@@ -60,7 +60,7 @@
                         {% endfor %}
                     </div>
                     {% endif %}
-                    <h2 style="font-family: 'Sora', serif; font-size: 1.8rem; margin-bottom: 5px;">{{ candidate.user.username }}</h2>
+                    <h2 style="font-family: 'Sora', serif; font-size: 1.8rem; margin-bottom: 5px;">{{ candidate.display_name }}</h2>
                     <h4 style="font-family: 'Sora', serif; font-size: 15px; margin-bottom: 15px;">{{ candidate.headline }}</h4>
                     <p style="color: #888; font-size: 0.85rem;">SKILLS</p>
                     <p style="color: #b0b0b0; font-size: 0.95rem; line-height: 1.6;">
@@ -77,11 +77,11 @@
                 </div>
                 {% if request.user.profile.is_recruiter %}
                     <a href="{% url 'start_conversation' candidate.id %}" class="message-btn">
-                        Message {{ candidate.user.username }}
+                        Message {{ candidate.display_name }}
                     </a>
 
-                    <a href="mailto:{{ candidate.user.email }}"class="message-btn">
-                        Email {{ candidate.user.username }}
+                    <a href="mailto:{{ candidate.user.email }}?subject={{ 'Opportunity via CareerConnect'|urlencode }}&body={{ 'Hi '|add:candidate.display_name|add:',\n\n'|urlencode }}" class="message-btn">
+                        Email {{ candidate.display_name }}
                     </a>
                 {% endif %}
 

@@ -19,6 +19,21 @@ class Profile(models.Model):
     location_long = models.DecimalField(decimal_places=6, max_digits=9, null=True, blank=True)
     notif_check = models.BooleanField(default=False)
 
+    @property
+    def display_name(self):
+        full_name = self.user.get_full_name().strip()
+        return full_name or self.user.username
+
+    @property
+    def initials(self):
+        full_name = self.user.get_full_name().strip()
+        if full_name:
+            parts = [part for part in full_name.split() if part]
+            if len(parts) == 1:
+                return parts[0][0].upper()
+            return (parts[0][0] + parts[-1][0]).upper()
+        return (self.user.username[:1] or '?').upper()
+
     def __str__(self):
         return f"{self.user.username}'s Profile"
 

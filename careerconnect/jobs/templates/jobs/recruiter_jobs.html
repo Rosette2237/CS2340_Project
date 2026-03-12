@@ -22,14 +22,17 @@
                             {{ job.get_job_type_display|upper }}
                         </span>
                     </div>
-                    <h2 style="font-family: 'Sora', serif; font-size: 1.8rem; margin-bottom: 15px;">{{ job.title }}</h2>
+                    <h2 style="font-family: 'Sora', serif; font-size: 1.8rem; margin-bottom: 5px;">{{ job.title }}</h2>
+                    <h3 style="font-family: 'Sora', serif; font-size: 1.2rem; color: #00cfd5; margin-top: 0; margin-bottom: 15px;">
+                        {{ job.company_name }}
+                    </h3>
                     <p style="color: #888; font-size: 0.85rem;">DESCRIPTION</p>
                     <p style="color: #b0b0b0; font-size: 0.95rem; line-height: 1.6;">
                         {{ job.description|truncatewords:35 }}
                     </p>
                     <p style="color: #888; font-size: 0.85rem;">SKILLS REQUIRED</p>
                     <p style="color: #b0b0b0; font-size: 0.95rem; line-height: 1.6;">
-                        {{ job.skills_required }}
+                        {{ job.skills_required|truncatewords:20 }}
                     </p>
                 </div>
 
@@ -48,15 +51,23 @@
                         <span style="color: #00cfd5; font-size: 0.85rem;">{{ job.city }}{% if job.city and job.state %}, {% endif %}{{ job.state }}</span>
                         <span style="color: #888; font-size: 0.85rem;"> · Posted {{ job.posted_at|date:"M d" }}</span>
                     </div>
-                    <div style="margin-top: 15px;">
+                    
+                    <div style="margin-top: 15px; display: flex; gap: 10px; width: 100%;">
                         <a href="{% url 'jobs:edit' job.id %}" class="btn-save"
-                           style="display:block; text-align:center; padding:10px; background-color:#ff9800; color:white; text-decoration:none; border-radius:4px;">
-                           Edit Job
+                           style="flex: 1; text-align:center; padding:10px; background-color:#ff9800; color:white; text-decoration:none; border-radius:4px;">
+                           Edit
                         </a>
+                        <form action="{% url 'jobs:delete' job.id %}" method="POST" style="flex: 1; margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-save" 
+                                style="width: 100%; height: 100%; padding:10px; background-color:#ff4d4d; color:white; border:none; border-radius:4px; cursor:pointer;"
+                                onclick="return confirm('Are you sure you want to delete this job posting?');">
+                                Delete
+                            </button>
+                        </form>
                     </div>
                 </div>
-            {% endfor %}
-            </div>
+            </div> {% endfor %}
         </div>
         {% else %}
             <div style="width: 100%; display: flex; justify-content: center;">
