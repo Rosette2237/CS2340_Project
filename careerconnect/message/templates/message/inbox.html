@@ -6,7 +6,7 @@
 
 <div class="messaging-wrapper">
 
-    <div class="sidebar" id="sidebar" style="margin-bottom: 50px">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h2>Messages</h2>
             <p>{{ conversations|length }} conversation{{ conversations|length|pluralize }}</p>
@@ -63,7 +63,7 @@
         </div>
     </div>
 
-    <div class="chat-main" style="margin-bottom: 50px">
+    <div class="chat-main" style="width: 200rem">
         {% if active_conv %}
             <div class="chat-header">
                 <div class="chat-header-avatar">{{ other_user.initials }}</div>
@@ -75,7 +75,6 @@
                 </div>
             </div>
 
-            <!-- Messages -->
             <div class="messages-area" id="messages">
                 {% for msg in messages %}
                     <div class="message-row {% if msg.sender == request.user.profile %}sent{% else %}received{% endif %}">
@@ -94,7 +93,6 @@
                 {% endfor %}
             </div>
 
-            <!-- Input -->
             <div class="input-area">
                 <textarea id="message-input" class="message-input" placeholder="Type a message..." rows="1"></textarea>
                 <button class="send-btn" id="send-btn">
@@ -162,7 +160,6 @@
         inputEl.value = '';
         inputEl.style.height = 'auto';
 
-        // Show immediately (optimistic)
         const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         appendMessage(body, now, true);
 

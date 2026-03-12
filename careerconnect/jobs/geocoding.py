@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 
 def geocode_job(address, city, state, country="US"):
-    
+
     parts = [p for p in [address, city, state, country] if p and p.strip()]
     query = ", ".join(parts)
     if not query:
