@@ -1,62 +1,77 @@
-# CS 2340 Project 2
+# CareerConnect
 
-# Sprint 1 Planning
+A full-stack job platform connecting job seekers with recruiters — built with Django.
 
-## Scrum Roles and Additional Responsibilities
-
-### Scrum roles
-- **Scrum Master:** Mehul  
-- **Product Owner:** Minhong  
-- **Developers:** All  
-
-### Design / development / evaluation roles
-- **All team members are full-stack developers** (front-end + back-end responsibilities shared across the team).
-
-### Team availability
-Screenshot of the shared weekly availability calendar:
-
-![Team availability calendar](docs/images/team-availability.png)
+![CareerConnect main page](docs/images/career_connect_main_page.png)
 
 ---
 
-## User Stories and Backlog (Sprint 1)
+## Features
 
-We plan to work on the **first 10 user stories** in sprint 1.
+**For Job Seekers**
+- Build a profile with headline, skills, education, work experience, and links
+- Search and filter jobs by title, skills, location, salary range, remote/on-site, and visa sponsorship
+- Apply to jobs with one click and include a personalized note
+- Track application status through a pipeline: Applied → Review → Interview → Offer → Closed
+- Receive job recommendations based on your skills
+- View job postings on an interactive map (Leaflet.js + OpenStreetMap), filter by distance, and set a preferred commute radius
+- Control profile visibility with privacy settings
 
-### Prioritized user stories
-1. As a **Job Seeker**, I want to create a profile with my headline, skills, education, work experience, and links so recruiters can learn about me.
-2. As a **Job Seeker**, I want to search for jobs with filters (title, skills, location, salary range, remote/on-site, visa sponsorship) so I can find opportunities that match my needs.
-3. As a **Job Seeker**, I want to apply to a job with one click and include a tailored note so my application feels personalized.
-4. As a **Job Seeker**, I want to track the status of my applications (Applied → Review → Interview → Offer → Closed) so I know where I stand.
-5. As a **Job Seeker**, I want to set privacy options on my profile so I control what recruiters can see.
-6. As a **Job Seeker**, I want to receive recommendations for jobs based on my skills so I discover opportunities I might have missed.
-7. As a **Job Seeker**, I want to view job postings on an interactive map so I can see which ones are near me.
-8. As a **Job Seeker**, I want to filter jobs on the map by distance from my current location so I can prioritize nearby opportunities.
-9. As a **Job Seeker**, I want to set a preferred commute radius (e.g., 10 miles) on the map so I only see jobs within a reasonable travel distance.
-10. As a **Recruiter**, I want to post and edit job roles so candidates can apply to my openings.
+**For Recruiters**
+- Post, edit, and manage job listings with office location pinned on a map
+- Search candidates by skills, location, and projects
+- Organize applicants through a Kanban pipeline
+- Message candidates directly within the platform (in-app inbox with real-time polling)
+- Email candidates through the platform to their personal email
+- Save candidate searches and get notified of new matches
+- Receive candidate recommendations for open postings
+- View clusters of applicants by location on a map
 
-### Scrum board
-Screenshot of the Scrum board (Jira):
-
-![Scrum board](docs/images/scrum-board.png)
-
-[Our Scrum Board (Jira)](https://careerconnect.atlassian.net/jira/software/projects/CAR/boards/1)
-
----
-
-## When to Meet the TA
-
-- **First meeting:** During **class**
-- **Second meeting:** Every **Thursday at 2:00 PM**  
-  - Location: **CCB 267 (preferred)** or via **Teams**
+**For Administrators**
+- Manage users and roles to keep the platform fair and safe
+- Moderate and remove job posts to prevent spam or abuse
+- Export platform data as CSV for reporting and analysis
 
 ---
 
-## Staying in Touch
+## Tech Stack
 
-- We will use **Microsoft Teams** to communicate.
-- We will address disagreements with coordination of the Scrum Master
-- Our decision making process will be team-based, with input from all members.
-- **Disallowed channels:** social media (e.g., Snapchat, Instagram, TikTok) and messaging services (e.g., WhatsApp, iMessage, GroupMe).
+- **Backend:** Django 5
+- **Frontend:** HTML, CSS (custom + Google Fonts)
+- **Database:** SQLite (local)
+- **Static files:** WhiteNoise
+- **Maps:** Leaflet.js + OpenStreetMap
+- **Messaging:** Django-native in-app inbox with AJAX long-polling
 
+---
 
+## Setup
+
+1. Clone the repo and create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Windows: venv\Scripts\activate
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install django python-dotenv whitenoise
+   ```
+
+3. Create `careerconnect/.env`:
+   ```
+   DJANGO_SECRET_KEY=your-secret-key-here
+   ```
+
+4. Run migrations and start the server:
+   ```bash
+   cd careerconnect
+   python manage.py migrate
+   python manage.py runserver
+   ```
+
+---
+
+## Team
+
+Built by Team CareerConnect at Georgia Tech.
